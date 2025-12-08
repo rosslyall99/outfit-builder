@@ -61,11 +61,22 @@ export default {
         { name: 'Charcoal', swatch: 'swatch-charcoal.png', preview: 'jacket-charcoal.png' },
         { name: 'Midnight Blue', swatch: 'swatch-midnightBlue.png', preview: 'jacket-midnightBlue.png' },
         { name: 'Light Grey', swatch: 'swatch-lightGrey.png', preview: 'jacket-lightGrey.png' }
+        { name: 'Lovat Blue', swatch: 'swatch-lovatBlue.png', preview: 'jacket-lovatBlue.png' }
+        { name: 'Moss Green', swatch: 'swatch-mossGreen.png', preview: 'jacket-mossGreen.png' }
+        { name: 'Peat Brown', swatch: 'swatch-peatBrown.png', preview: 'jacket-peatBrown.png' }
       ],
       kilts: [
-        { name: 'Isle of Skye', swatch: 'swatch-isleOfSkye.png', preview: 'kilt-isleOfSkye.png' },
+        
         { name: 'Ancient Patriot', swatch: 'swatch-ancientPatriot.png', preview: 'kilt-ancientPatriot.png' },
-        { name: 'Grey Slanj', swatch: 'swatch-greySlanj.png', preview: 'kilt-greySlanj.png' }
+        { name: 'Beatson', swatch: 'swatch-beatson.png', preview: 'kilt-beatson.png' },
+        { name: 'Buchanan Hunting', swatch: 'swatch-buchanan.png', preview: 'kilt-buchanan.png' },
+        { name: 'Grey Slanj', swatch: 'swatch-greySlanj.png', preview: 'kilt-greySlanj.png' },
+        { name: 'Isle of Skye', swatch: 'swatch-isleOfSkye.png', preview: 'kilt-isleOfSkye.png' },
+        { name: 'Manx Hunting', swatch: 'swatch-manx.png', preview: 'kilt-manx.png' },
+        { name: 'Maple Leaf', swatch: 'swatch-mapleLeaf.png', preview: 'kilt-mapleLeaf.png' },
+        { name: 'Spirit of Glasgow', swatch: 'swatch-spiritOfGlasgow.png', preview: 'kilt-spiritOfGlasgow.png' },
+        { name: 'St Mirren FC', swatch: 'swatch-stMirren.png', preview: 'kilt-stMirren.png' },
+        { name: 'Weathered Patriot', swatch: 'swatch-weatheredPatriot.png', preview: 'kilt-weatheredPatriot.png' },
       ],
       selections: {
         jacket: { name: 'Charcoal', swatch: 'swatch-charcoal.png', preview: 'jacket-charcoal.png' },
