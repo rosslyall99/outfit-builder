@@ -58,12 +58,12 @@ export default {
   data() {
     return {
       jackets: [
-        { name: 'Charcoal', swatch: 'swatch-charcoal.png', preview: 'jacket-charcoal.png' },
-        { name: 'Midnight Blue', swatch: 'swatch-midnightBlue.png', preview: 'jacket-midnightBlue.png' },
-        { name: 'Light Grey', swatch: 'swatch-lightGrey.png', preview: 'jacket-lightGrey.png' },
-        { name: 'Lovat Blue', swatch: 'swatch-lovatBlue.png', preview: 'jacket-lovatBlue.png' },
-        { name: 'Moss Green', swatch: 'swatch-mossGreen.png', preview: 'jacket-mossGreen.png' },
-        { name: 'Peat Brown', swatch: 'swatch-peatBrown.png', preview: 'jacket-peatBrown.png' }
+        { name: 'Charcoal', swatch: 'swatch-charcoal.png', preview: 'jacketColors/jacket-charcoal.png' },
+        { name: 'Midnight Blue', swatch: 'swatch-midnightBlue.png', preview: 'jacketColors/jacket-midnightBlue.png' },
+        { name: 'Light Grey', swatch: 'swatch-lightGrey.png', preview: 'jacketColors/jacket-lightGrey.png' },
+        { name: 'Lovat Blue', swatch: 'swatch-lovatBlue.png', preview: 'jacketColors/jacket-lovatBlue.png' },
+        { name: 'Moss Green', swatch: 'swatch-mossGreen.png', preview: 'jacketColors/jacket-mossGreen.png' },
+        { name: 'Peat Brown', swatch: 'swatch-peatBrown.png', preview: 'jacketColors/jacket-peatBrown.png' }
       ],
       kilts: [
         { name: 'Ancient Patriot', swatch: 'swatch-ancientPatriot.png', preview: 'kilt-ancientPatriot.png' },
