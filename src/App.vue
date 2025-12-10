@@ -2,7 +2,6 @@
   <div class="outfit-builder">
     <!-- Left column: thumbnails -->
     <div class="thumbnails">
-      
       <!-- Jacket section -->
       <div class="section">
         <h3>Select a Jacket</h3>
@@ -42,15 +41,21 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <!-- Right column: preview -->
     <div class="preview">
+  <div class="preview-stack">
+    <img :src="`${basePath}images/baseBody.png`" class="base-body" />
+    <img :src="`${basePath}images/${selections.jacket.preview}`" class="jacket" />
+    <img :src="`${basePath}images/${selections.kilt.preview}`" class="kilt" />
+  </div>
+</div>
+
+      <!-- Dynamic clothing layers -->
       <img :src="`${basePath}images/${selections.jacket.preview}`" class="jacket" />
       <img :src="`${basePath}images/${selections.kilt.preview}`" class="kilt" />
     </div>
-  </div>
 </template>
 
 <script>
@@ -58,12 +63,12 @@ export default {
   data() {
     return {
       jackets: [
-        { name: 'Charcoal', swatch: 'swatch-charcoal.png', preview: 'jacketColors/jacket-charcoal.png' },
-        { name: 'Midnight Blue', swatch: 'swatch-midnightBlue.png', preview: 'jacketColors/jacket-midnightBlue.png' },
-        { name: 'Light Grey', swatch: 'swatch-lightGrey.png', preview: 'jacketColors/jacket-lightGrey.png' },
-        { name: 'Lovat Blue', swatch: 'swatch-lovatBlue.png', preview: 'jacketColors/jacket-lovatBlue.png' },
-        { name: 'Moss Green', swatch: 'swatch-mossGreen.png', preview: 'jacketColors/jacket-mossGreen.png' },
-        { name: 'Peat Brown', swatch: 'swatch-peatBrown.png', preview: 'jacketColors/jacket-peatBrown.png' }
+        { name: 'Charcoal', swatch: '/jacketSwatches/swatch-charcoal.png', preview: '/jacketColors/jacket-charcoalGen.png' },
+        { name: 'Midnight Blue', swatch: '/jacketSwatches/swatch-midnightBlue.png', preview: '/jacketColors/jacket-midnightBlueGen.png' },
+        { name: 'Light Grey', swatch: '/jacketSwatches/swatch-lightGrey.png', preview: '/jacketColors/jacket-lightGreyGen.png' },
+        { name: 'Lovat Blue', swatch: '/jacketSwatches/swatch-lovatBlue.png', preview: '/jacketColors/jacket-lovatBlueGen.png' },
+        { name: 'Moss Green', swatch: '/jacketSwatches/swatch-mossGreen.png', preview: '/jacketColors/jacket-mossGreenGen.png' },
+        { name: 'Peat Brown', swatch: '/jacketSwatches/swatch-peatBrown.png', preview: '/jacketColors/jacket-peatBrownGen.png' }
       ],
       kilts: [
         { name: 'Ancient Patriot', swatch: 'swatch-ancientPatriot.png', preview: 'kilt-ancientPatriot.png' },
@@ -138,15 +143,24 @@ body {
 
 .preview {
   position: relative;
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 800px;
-  text-align: right;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.preview img {
-  max-width: 100%;
+.preview-stack {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  aspect-ratio: 3 / 4;
+}
+
+.preview-stack img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: auto;
 }
 
@@ -202,4 +216,29 @@ body {
   color: #333;
 }
 
+.base-body {
+  width: 100%;
+  height: auto;
+  display: block;
+  z-index: 0; /* bottom layer */
+  position: relative; /* acts as anchor */
+}
+
+.jacket {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  z-index: 2; /* above base */
+}
+
+.kilt {
+  position: absolute;
+  top: 35%;
+  left: 52%;
+  transform: translateX(-50%);
+  width: 300px;
+  z-index: 1; /* between base and jacket */
+}
 </style>
