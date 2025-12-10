@@ -50,12 +50,8 @@
     <img :src="`${basePath}images/${selections.jacket.preview}`" class="jacket" />
     <img :src="`${basePath}images/${selections.kilt.preview}`" class="kilt" />
   </div>
+  </div>
 </div>
-
-      <!-- Dynamic clothing layers -->
-      <img :src="`${basePath}images/${selections.jacket.preview}`" class="jacket" />
-      <img :src="`${basePath}images/${selections.kilt.preview}`" class="kilt" />
-    </div>
 </template>
 
 <script>
