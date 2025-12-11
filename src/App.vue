@@ -232,9 +232,8 @@ body {
 
 /* Bottom half (example: kilt) */
 .kilt {
-  /*display: none;*/
   position: absolute;
-  top: 35%;      /* adjust as needed */
+  top: 0%;      /* adjust as needed */
   left: 50%;
   transform: translateX(-50%);
   width: 100%;   /* scale with baseBody */
