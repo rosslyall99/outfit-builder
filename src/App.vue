@@ -1,78 +1,94 @@
 <template>
   <div class="outfit-builder">
+
     <!-- Left column: thumbnails -->
     <div class="thumbnails">
-      <!-- Jacket section -->
-      <div class="section">
-        <h3>Select a Jacket</h3>
-        <div class="thumbs">
-          <div
-            v-for="jacket in jackets"
-            :key="jacket.name"
-            class="thumb-container"
-            @click="selections.jacket = jacket"
-            :class="{ selected: selections.jacket.name === jacket.name }"
-          >
-            <img
-              :src="`${basePath}images/jacketSwatches/${jacket.swatch}`"
-              :alt="jacket.name"
-            />
-            <p class="thumb-label">{{ jacket.name }}</p>
+
+      <!-- ✅ Jacket section (now collapsible) -->
+      <div class="collapsible">
+        <h3 class="section-heading collapsible-toggle">Select a Jacket<span class="arrow">▼</span></h3>
+
+        <div class="collapsible-content">
+          <div class="section">
+            <div class="thumbs">
+              <div
+                v-for="jacket in jackets"
+                :key="jacket.name"
+                class="thumb-container"
+                @click="selections.jacket = jacket"
+                :class="{ selected: selections.jacket.name === jacket.name }"
+              >
+                <img
+                  :src="`${basePath}images/jacketSwatches/${jacket.swatch}`"
+                  :alt="jacket.name"
+                />
+                <p class="thumb-label">{{ jacket.name }}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Kilt section -->
-      <div class="section">
-        <h3>Select a Kilt</h3>
-        <div class="thumbs">
-          <div
-            v-for="kilt in kilts"
-            :key="kilt.name"
-            class="thumb-container"
-            @click="selections.kilt = kilt"
-            :class="{ selected: selections.kilt.name === kilt.name }"
-          >
-            <img
-              :src="`${basePath}images/${kilt.swatch}`"
-              :alt="kilt.name"
-            />
-            <p class="thumb-label">{{ kilt.name }}</p>
+      <!-- ✅ Kilt section (already collapsible, cleaned up) -->
+      <div class="collapsible">
+        <h3 class="section-heading collapsible-toggle">Select a Kilt<span class="arrow">▼</span></h3>
+
+        <div class="collapsible-content">
+          <div class="section">
+            <div class="thumbs">
+              <div
+                v-for="kilt in kilts"
+                :key="kilt.name"
+                class="thumb-container"
+                @click="selections.kilt = kilt"
+                :class="{ selected: selections.kilt.name === kilt.name }"
+              >
+                <img :src="`${basePath}images/${kilt.swatch}`" :alt="kilt.name" />
+                <p class="thumb-label">{{ kilt.name }}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    
-      <!-- Tie section -->
-      <div class="section">
-        <h3>Select a Tie</h3>
-        <div class="thumbs">
-          <div
-            v-for="tie in ties"
-            :key="tie.name"
-            class="thumb-container"
-            @click="selections.tie = tie"
-            :class="{ selected: selections.tie.name === tie.name }"
-          >
-            <img
-              :src="`${basePath}images/${tie.swatch}`"
-              :alt="tie.name"
-            />
-            <p class="thumb-label">{{ tie.name }}</p>
+
+      <!-- ✅ Tie section (now collapsible) -->
+      <div class="collapsible">
+        <h3 class="section-heading collapsible-toggle">Select a Tie<span class="arrow">▼</span></h3>
+
+        <div class="collapsible-content">
+          <div class="section">
+            <div class="thumbs">
+              <div
+                v-for="tie in ties"
+                :key="tie.name"
+                class="thumb-container"
+                @click="selections.tie = tie"
+                :class="{ selected: selections.tie.name === tie.name }"
+              >
+                <img
+                  :src="`${basePath}images/${tie.swatch}`"
+                  :alt="tie.name"
+                />
+                <p class="thumb-label">{{ tie.name }}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
     </div>
 
     <!-- Right column: preview -->
     <div class="preview">
-  <div class="preview-stack">
-    <img :src="`${basePath}images/baseBody.png`" class="base-body" />
-    <img :src="`${basePath}images/jacketColors/${selections.jacket.preview}`" class="jacket" />
-    <img :src="`${basePath}images/tieColors/${selections.tie.preview}`" class="tie" />
-    <img :src="`${basePath}images/${selections.kilt.preview}`" class="kilt" />
+      <div class="preview-stack">
+        <img :src="`${basePath}images/baseBody.png`" class="base-body" />
+        <img :src="`${basePath}images/jacketColors/${selections.jacket.preview}`" class="jacket" />
+        <img :src="`${basePath}images/tieColors/${selections.tie.preview}`" class="tie" />
+        <img :src="`${basePath}images/${selections.kilt.preview}`" class="kilt" />
+      </div>
+    </div>
+
   </div>
-  </div>
-</div>
 </template>
 
 <script>
@@ -120,16 +136,25 @@ export default {
   },
 
 computed: {
-  basePath() {
-    return import.meta.env.BASE_URL || '/'
+    basePath() {
+      return import.meta.env.BASE_URL || '/'
+    }
+  },
+
+  mounted() {
+    document.querySelectorAll('.collapsible-toggle').forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        toggle.parentElement.classList.toggle('active');
+      });
+    });
   }
-}
 }
 </script>
 
 <style>
 #app {
   width: 100%;
+  max-width: 100%;
 }
 
 body {
@@ -137,31 +162,84 @@ body {
   color: #000;
 }
 
+h3 {
+  margin: 0;
+}
+
 .outfit-builder {
   display: grid;
-  grid-template-columns: 75% 25%;
+  grid-template-columns: 1fr auto;
   width: 100%;
+  height: 100vh;
+}
+
+.collapsible {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.section-heading {
+  padding: 0.5%;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #000;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.section {
+  background: #e4d8d8;
+  border-radius: 6px;
+}
+
+.collapsible.active {
+  border: 1px solid #000;
+  margin: 0;
+}
+
+.collapsible.active .section-heading {
+  border: none;
+  border-radius: 0;
+}
+
+.collapsible-toggle {
+  cursor: pointer;
+}
+
+.collapsible-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}
+
+.collapsible.active .collapsible-content {
+  max-height: 1000px;
+}
+
+.collapsible.active .arrow {
+  transform: rotate(180deg);
+}
+
+.arrow {
+  transition: transform 0.5s ease;
 }
 
 /* Thumbnail sections */
 .thumbnails {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-}
-
-.section {
-  padding: 10px;
-  background: #f9f9f9;
-  border-radius: 6px;
-  border: 1px solid #ddd;
+  gap: 1%;
+  margin-right: 1.5%;
 }
 
 .thumbs {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  display: grid;
+  padding: 0.5%;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 0.5%;
 }
 
 .thumb-container {
@@ -173,8 +251,8 @@ body {
 
 .thumb-container img,
 .thumbs img {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
   border: 2px solid transparent;
   border-radius: 4px;
@@ -187,24 +265,32 @@ body {
 }
 
 .thumb-label {
-  margin-top: 5px;
-  font-size: 14px;
+  margin: 1%;
+  font-size: 0.8em;
+  font-weight: 500;
   color: #333;
+  white-space: normal;
+  max-width: 80px;
+  text-align: center;
 }
 
 /* Preview area */
 .preview {
+  height: 100vh;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 .preview-stack {
-  position: relative;
-  width: 100%;
-  max-width: 600px;
+  max-height: 100vh;           /* never taller than viewport */
+  max-width: 100vw;            /* never wider than viewport */
+  width: auto;
+  height: auto;
   aspect-ratio: 3 / 4;
+  object-fit: contain;         /* ensures full image fits */
 }
 
 /* Base body scales fluidly */
