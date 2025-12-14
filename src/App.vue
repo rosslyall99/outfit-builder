@@ -92,7 +92,7 @@
                 class="thumb-container"
                 @click="selections.kilt = kilt"
                 :class="{ selected: selections.kilt.name === kilt.name }">
-              <img :src="`${basePath}images/${kilt.swatch}`" :alt="kilt.name" />
+              <img :src="`${basePath}images/kiltSwatches/${kilt.swatch}`" :alt="kilt.name" />
               <p class="thumb-label">{{ kilt.name }}</p>
             </div>
           </div>
@@ -189,7 +189,7 @@
       <img :src="`${basePath}images/baseBody.png`" class="base-body" />
       <img :src="`${basePath}images/jacketColors/${selections.jacket.preview}`" class="jacket" />
       <img :src="`${basePath}images/tieColors/${selections.tie.preview}`" class="tie" />
-      <img :src="`${basePath}images/${selections.kilt.preview}`" class="kilt" />
+      <img :src="`${basePath}images/kiltColors/${selections.kilt.preview}`" class="kilt" />
     </div>
   </div>
 
