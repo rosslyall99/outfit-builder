@@ -6,7 +6,7 @@
 
     <!-- Jacket section -->
     <div class="collapsible" :class="{ active: currentSection === 'jacket' }">
-      <h3 class="section-heading collapsible-toggle" @click="toggleSection('jacket')">Select a Jacket <span class="arrow">▼</span></h3>
+      <h3 class="section-heading collapsible-toggle" @click="toggleSection('jacket')">Jacket <span class="arrow">▼</span></h3>
       <div class="collapsible-content">
         <div class="section">
           <div class="thumbs">
@@ -22,15 +22,15 @@
           </div>
         </div>
         <div class="collapsible-footer">
-          <button class="nav-btn prev" @click="goToSection('shoes')">◀ Select Shoes</button>
-          <button class="nav-btn next" @click="goToSection('shirt')">Select a Shirt ▶</button>
+          <button class="nav-btn prev" @click="goToSection('shoes')">◀ Shoes</button>
+          <button class="nav-btn next" @click="goToSection('shirt')">Shirt ▶</button>
         </div>
       </div>
     </div>
 
     <!-- Shirt section -->
     <div class="collapsible" :class="{ active: currentSection === 'shirt' }">
-      <h3 class="section-heading collapsible-toggle" @click="toggleSection('shirt')">Select a Shirt <span class="arrow">▼</span></h3>
+      <h3 class="section-heading collapsible-toggle" @click="toggleSection('shirt')">Shirt <span class="arrow">▼</span></h3>
       <div class="collapsible-content">
         <div class="section">
           <div class="thumbs">
@@ -46,8 +46,8 @@
           </div>
         </div>
         <div class="collapsible-footer">
-          <button class="nav-btn prev" @click="goToSection('jacket')">◀ Select a Jacket</button>
-          <button class="nav-btn next" @click="goToSection('tie')">Select a Tie ▶</button>
+          <button class="nav-btn prev" @click="goToSection('jacket')">◀ Jacket</button>
+          <button class="nav-btn next" @click="goToSection('tie')">Tie ▶</button>
         </div>
       </div>
     </div>
@@ -56,7 +56,7 @@
     <div class="collapsible" :class="{ active: currentSection === 'tie' }">
       <h3 class="section-heading collapsible-toggle"
           @click="toggleSection('tie')">
-        Select a Tie <span class="arrow">▼</span>
+        Tie <span class="arrow">▼</span>
       </h3>
       <div class="collapsible-content">
         <div class="section">
@@ -72,8 +72,8 @@
           </div>
         </div>
         <div class="collapsible-footer">
-          <button class="nav-btn prev" @click="goToSection('shirt')">◀ Select a Shirt</button>
-          <button class="nav-btn next" @click="goToSection('kilt')">Select a Kilt ▶</button>
+          <button class="nav-btn prev" @click="goToSection('shirt')">◀ Shirt</button>
+          <button class="nav-btn next" @click="goToSection('kilt')">Kilt ▶</button>
         </div>
       </div>
     </div>
@@ -82,7 +82,7 @@
     <div class="collapsible" :class="{ active: currentSection === 'kilt' }">
       <h3 class="section-heading collapsible-toggle"
           @click="toggleSection('kilt')">
-        Select a Kilt <span class="arrow">▼</span>
+        Kilt <span class="arrow">▼</span>
       </h3>
       <div class="collapsible-content">
         <div class="section">
@@ -98,8 +98,8 @@
           </div>
         </div>
         <div class="collapsible-footer">
-          <button class="nav-btn prev" @click="goToSection('tie')">◀ Select a Tie</button>
-          <button class="nav-btn next" @click="goToSection('sporran')">Select a Sporran ▶</button>
+          <button class="nav-btn prev" @click="goToSection('tie')">◀ Tie</button>
+          <button class="nav-btn next" @click="goToSection('sporran')">Sporran ▶</button>
         </div>
       </div>
     </div>
@@ -108,7 +108,7 @@
     <div class="collapsible" :class="{ active: currentSection === 'sporran' }">
       <h3 class="section-heading collapsible-toggle"
           @click="toggleSection('sporran')">
-        Select a Sporran <span class="arrow">▼</span>
+        Sporran <span class="arrow">▼</span>
       </h3>
       <div class="collapsible-content">
         <div class="section">
@@ -124,8 +124,8 @@
           </div>
         </div>
         <div class="collapsible-footer">
-          <button class="nav-btn prev" @click="goToSection('kilt')">◀ Select a Kilt</button>
-          <button class="nav-btn next" @click="goToSection('socks')">Select Socks ▶</button>
+          <button class="nav-btn prev" @click="goToSection('kilt')">◀ Kilt</button>
+          <button class="nav-btn next" @click="goToSection('socks')">Socks ▶</button>
         </div>
       </div>
     </div>
@@ -150,8 +150,8 @@
           </div>
         </div>
         <div class="collapsible-footer">
-          <button class="nav-btn prev" @click="goToSection('sporran')">◀ Select a Sporran</button>
-          <button class="nav-btn next" @click="goToSection('shoes')">Select Shoes ▶</button>
+          <button class="nav-btn prev" @click="goToSection('sporran')">◀ Sporran</button>
+          <button class="nav-btn next" @click="goToSection('shoes')">Shoes ▶</button>
         </div>
       </div>
     </div>
@@ -176,8 +176,8 @@
           </div>
         </div>
         <div class="collapsible-footer">
-          <button class="nav-btn prev" @click="goToSection('socks')">◀ Select a Sporran</button>
-          <button class="nav-btn next" @click="goToSection('jacket')">Select a Jacket ▶</button>
+          <button class="nav-btn prev" @click="goToSection('socks')">◀ Sporran</button>
+          <button class="nav-btn next" @click="goToSection('jacket')">Jacket ▶</button>
         </div>
       </div>
     </div>
@@ -288,16 +288,24 @@ h3 {
 
 .section-heading {
   padding: 0.5%;
-  background-color: #f5f5f5;   /* light grey background */
-  color: #a5a5a5;                 /* grey text */
-  border: 1px solid #ccc;      /* grey border */
+  background-color: #f5f5f5;
+  color: #a5a5a5;
+  border: 1px solid #ccc;
   border-radius: 6px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   cursor: pointer;
 
+  position: relative;   /* allow absolute positioning inside */
+  justify-content: center; /* center the text */
+  text-align: center;
 }
+
+.section-heading .arrow {
+  position: absolute;
+  right: 10px;   /* keep arrow on the right edge */
+}
+
 
 .section {
   background: #e4d8d8;
