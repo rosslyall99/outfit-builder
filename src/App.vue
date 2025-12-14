@@ -4,108 +4,194 @@
     <!-- Left column: thumbnails -->
     <div class="thumbnails">
 
-  <!-- Jacket section -->
-  <div class="collapsible" :class="{ active: currentSection === 'jacket' }">
-    <h3 class="section-heading collapsible-toggle"
-        @click="toggleSection('jacket')">
-      Select a Jacket <span class="arrow">▼</span>
-    </h3>
-
-    <div class="collapsible-content">
-      <div class="section">
-        <div class="thumbs">
-          <div v-for="jacket in jackets"
-               :key="jacket.name"
-               class="thumb-container"
-               @click="selections.jacket = jacket"
-               :class="{ selected: selections.jacket.name === jacket.name }">
-            <img :src="`${basePath}images/jacketSwatches/${jacket.swatch}`"
-                 :alt="jacket.name" />
-            <p class="thumb-label">{{ jacket.name }}</p>
+    <!-- Jacket section -->
+    <div class="collapsible" :class="{ active: currentSection === 'jacket' }">
+      <h3 class="section-heading collapsible-toggle" @click="toggleSection('jacket')">Select a Jacket <span class="arrow">▼</span></h3>
+      <div class="collapsible-content">
+        <div class="section">
+          <div class="thumbs">
+            <div v-for="jacket in jackets"
+                :key="jacket.name"
+                class="thumb-container"
+                @click="selections.jacket = jacket"
+                :class="{ selected: selections.jacket.name === jacket.name }">
+              <img :src="`${basePath}images/jacketSwatches/${jacket.swatch}`"
+                  :alt="jacket.name" />
+              <p class="thumb-label">{{ jacket.name }}</p>
+            </div>
           </div>
         </div>
+        <div class="collapsible-footer">
+          <button class="nav-btn prev" @click="goToSection('shoes')">◀ Select Shoes</button>
+          <button class="nav-btn next" @click="goToSection('shirt')">Select a Shirt ▶</button>
+        </div>
       </div>
-      <div class="collapsible-footer">
-        <button class="nav-btn prev" @click="goToSection('tie')">
-          ◀ Previous Select a Tie
-        </button>
-        <button class="nav-btn next" @click="goToSection('kilt')">
-          Next ▶ Select a Kilt
-        </button>
+    </div>
+
+    <!-- Shirt section -->
+    <div class="collapsible" :class="{ active: currentSection === 'shirt' }">
+      <h3 class="section-heading collapsible-toggle" @click="toggleSection('shirt')">Select a Shirt <span class="arrow">▼</span></h3>
+      <div class="collapsible-content">
+        <div class="section">
+          <div class="thumbs">
+            <div v-for="shirt in shirts"
+                :key="shirt.name"
+                class="thumb-container"
+                @click="selections.shirt = shirt"
+                :class="{ selected: selections.jacket.name === shirt.name }">
+              <img :src="`${basePath}images/shirtSwatches/${shirt.swatch}`"
+                  :alt="shirt.name" />
+              <p class="thumb-label">{{ shirt.name }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="collapsible-footer">
+          <button class="nav-btn prev" @click="goToSection('jacket')">◀ Select a Jacket</button>
+          <button class="nav-btn next" @click="goToSection('tie')">Select a Tie ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tie section -->
+    <div class="collapsible" :class="{ active: currentSection === 'tie' }">
+      <h3 class="section-heading collapsible-toggle"
+          @click="toggleSection('tie')">
+        Select a Tie <span class="arrow">▼</span>
+      </h3>
+      <div class="collapsible-content">
+        <div class="section">
+          <div class="thumbs">
+            <div v-for="tie in ties"
+                :key="tie.name"
+                class="thumb-container"
+                @click="selections.tie = tie"
+                :class="{ selected: selections.tie.name === tie.name }">
+              <img :src="`${basePath}images/${tie.swatch}`" :alt="tie.name" />
+              <p class="thumb-label">{{ tie.name }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="collapsible-footer">
+          <button class="nav-btn prev" @click="goToSection('shirt')">◀ Select a Shirt</button>
+          <button class="nav-btn next" @click="goToSection('kilt')">Select a Kilt ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kilt section -->
+    <div class="collapsible" :class="{ active: currentSection === 'kilt' }">
+      <h3 class="section-heading collapsible-toggle"
+          @click="toggleSection('kilt')">
+        Select a Kilt <span class="arrow">▼</span>
+      </h3>
+      <div class="collapsible-content">
+        <div class="section">
+          <div class="thumbs">
+            <div v-for="kilt in kilts"
+                :key="kilt.name"
+                class="thumb-container"
+                @click="selections.kilt = kilt"
+                :class="{ selected: selections.kilt.name === kilt.name }">
+              <img :src="`${basePath}images/${kilt.swatch}`" :alt="kilt.name" />
+              <p class="thumb-label">{{ kilt.name }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="collapsible-footer">
+          <button class="nav-btn prev" @click="goToSection('tie')">◀ Select a Tie</button>
+          <button class="nav-btn next" @click="goToSection('sporran')">Select a Sporran ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sporran section -->
+    <div class="collapsible" :class="{ active: currentSection === 'sporran' }">
+      <h3 class="section-heading collapsible-toggle"
+          @click="toggleSection('sporran')">
+        Select a Sporran <span class="arrow">▼</span>
+      </h3>
+      <div class="collapsible-content">
+        <div class="section">
+          <div class="thumbs">
+            <div v-for="sporran in sporrans"
+                :key="sporran.name"
+                class="thumb-container"
+                @click="selections.sporran = sporran"
+                :class="{ selected: selections.sporran.name === sporran.name }">
+              <img :src="`${basePath}images/${sporran.swatch}`" :alt="sporran.name" />
+              <p class="thumb-label">{{ sporran.name }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="collapsible-footer">
+          <button class="nav-btn prev" @click="goToSection('kilt')">◀ Select a Kilt</button>
+          <button class="nav-btn next" @click="goToSection('socks')">Select Socks ▶</button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Socks section -->
+    <div class="collapsible" :class="{ active: currentSection === 'socks' }">
+      <h3 class="section-heading collapsible-toggle"
+          @click="toggleSection('socks')">
+        Select Socks <span class="arrow">▼</span>
+      </h3>
+      <div class="collapsible-content">
+        <div class="section">
+          <div class="thumbs">
+            <div v-for="socks in sockss"
+                :key="socks.name"
+                class="thumb-container"
+                @click="selections.socks = socks"
+                :class="{ selected: selections.socks.name === socks.name }">
+              <img :src="`${basePath}images/${socks.swatch}`" :alt="socks.name" />
+              <p class="thumb-label">{{ socks.name }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="collapsible-footer">
+          <button class="nav-btn prev" @click="goToSection('sporran')">◀ Select a Sporran</button>
+          <button class="nav-btn next" @click="goToSection('shoes')">Select Shoes ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shoes section -->
+    <div class="collapsible" :class="{ active: currentSection === 'shoes' }">
+      <h3 class="section-heading collapsible-toggle"
+          @click="toggleSection('shoes')">
+        Select Shoes <span class="arrow">▼</span>
+      </h3>
+      <div class="collapsible-content">
+        <div class="section">
+          <div class="thumbs">
+            <div v-for="shoes in shoess"
+                :key="shoes.name"
+                class="thumb-container"
+                @click="selections.shoes = shoes"
+                :class="{ selected: selections.shoes.name === shoes.name }">
+              <img :src="`${basePath}images/${shoes.swatch}`" :alt="shoes.name" />
+              <p class="thumb-label">{{ shoes.name }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="collapsible-footer">
+          <button class="nav-btn prev" @click="goToSection('socks')">◀ Select a Sporran</button>
+          <button class="nav-btn next" @click="goToSection('jacket')">Select a Jacket ▶</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Kilt section -->
-  <div class="collapsible" :class="{ active: currentSection === 'kilt' }">
-    <h3 class="section-heading collapsible-toggle"
-        @click="toggleSection('kilt')">
-      Select a Kilt <span class="arrow">▼</span>
-    </h3>
-    <div class="collapsible-content">
-      <div class="section">
-        <div class="thumbs">
-          <div v-for="kilt in kilts"
-               :key="kilt.name"
-               class="thumb-container"
-               @click="selections.kilt = kilt"
-               :class="{ selected: selections.kilt.name === kilt.name }">
-            <img :src="`${basePath}images/${kilt.swatch}`" :alt="kilt.name" />
-            <p class="thumb-label">{{ kilt.name }}</p>
-          </div>
-        </div>
-      </div>
-      <div class="collapsible-footer">
-        <button class="nav-btn prev" @click="goToSection('jacket')">
-          ◀ Previous Select a Jacket
-        </button>
-        <button class="nav-btn next" @click="goToSection('tie')">
-          Next ▶ Select a Tie
-        </button>
-      </div>
+  <!-- Right column: preview -->
+  <div class="preview">
+    <div class="preview-stack">
+      <img :src="`${basePath}images/baseBody.png`" class="base-body" />
+      <img :src="`${basePath}images/jacketColors/${selections.jacket.preview}`" class="jacket" />
+      <img :src="`${basePath}images/tieColors/${selections.tie.preview}`" class="tie" />
+      <img :src="`${basePath}images/${selections.kilt.preview}`" class="kilt" />
     </div>
   </div>
-
-  <!-- Tie section -->
-  <div class="collapsible" :class="{ active: currentSection === 'tie' }">
-    <h3 class="section-heading collapsible-toggle"
-        @click="toggleSection('tie')">
-      Select a Tie <span class="arrow">▼</span>
-    </h3>
-    <div class="collapsible-content">
-      <div class="section">
-        <div class="thumbs">
-          <div v-for="tie in ties"
-               :key="tie.name"
-               class="thumb-container"
-               @click="selections.tie = tie"
-               :class="{ selected: selections.tie.name === tie.name }">
-            <img :src="`${basePath}images/${tie.swatch}`" :alt="tie.name" />
-            <p class="thumb-label">{{ tie.name }}</p>
-          </div>
-        </div>
-      </div>
-      <div class="collapsible-footer">
-        <button class="nav-btn prev" @click="goToSection('kilt')">
-          ◀ Previous Select a Kilt
-        </button>
-        <button class="nav-btn next" @click="goToSection('jacket')">
-          Next ▶ Select a Jacket
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-    <!-- Right column: preview -->
-    <div class="preview">
-      <div class="preview-stack">
-        <img :src="`${basePath}images/baseBody.png`" class="base-body" />
-        <img :src="`${basePath}images/jacketColors/${selections.jacket.preview}`" class="jacket" />
-        <img :src="`${basePath}images/tieColors/${selections.tie.preview}`" class="tie" />
-        <img :src="`${basePath}images/${selections.kilt.preview}`" class="kilt" />
-      </div>
-    </div>
 
   </div>
 </template>
