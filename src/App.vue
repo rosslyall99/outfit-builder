@@ -4,79 +4,98 @@
     <!-- Left column: thumbnails -->
     <div class="thumbnails">
 
-      <!-- ✅ Jacket section (now collapsible) -->
-      <div class="collapsible">
-        <h3 class="section-heading collapsible-toggle">Select a Jacket<span class="arrow">▼</span></h3>
+  <!-- Jacket section -->
+  <div class="collapsible" :class="{ active: currentSection === 'jacket' }">
+    <h3 class="section-heading collapsible-toggle"
+        @click="toggleSection('jacket')">
+      Select a Jacket <span class="arrow">▼</span>
+    </h3>
 
-        <div class="collapsible-content">
-          <div class="section">
-            <div class="thumbs">
-              <div
-                v-for="jacket in jackets"
-                :key="jacket.name"
-                class="thumb-container"
-                @click="selections.jacket = jacket"
-                :class="{ selected: selections.jacket.name === jacket.name }"
-              >
-                <img
-                  :src="`${basePath}images/jacketSwatches/${jacket.swatch}`"
-                  :alt="jacket.name"
-                />
-                <p class="thumb-label">{{ jacket.name }}</p>
-              </div>
-            </div>
+    <div class="collapsible-content">
+      <div class="section">
+        <div class="thumbs">
+          <div v-for="jacket in jackets"
+               :key="jacket.name"
+               class="thumb-container"
+               @click="selections.jacket = jacket"
+               :class="{ selected: selections.jacket.name === jacket.name }">
+            <img :src="`${basePath}images/jacketSwatches/${jacket.swatch}`"
+                 :alt="jacket.name" />
+            <p class="thumb-label">{{ jacket.name }}</p>
           </div>
         </div>
       </div>
-
-      <!-- ✅ Kilt section (already collapsible, cleaned up) -->
-      <div class="collapsible">
-        <h3 class="section-heading collapsible-toggle">Select a Kilt<span class="arrow">▼</span></h3>
-
-        <div class="collapsible-content">
-          <div class="section">
-            <div class="thumbs">
-              <div
-                v-for="kilt in kilts"
-                :key="kilt.name"
-                class="thumb-container"
-                @click="selections.kilt = kilt"
-                :class="{ selected: selections.kilt.name === kilt.name }"
-              >
-                <img :src="`${basePath}images/${kilt.swatch}`" :alt="kilt.name" />
-                <p class="thumb-label">{{ kilt.name }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="collapsible-footer">
+        <button class="nav-btn prev" @click="goToSection('tie')">
+          ◀ Previous Select a Tie
+        </button>
+        <button class="nav-btn next" @click="goToSection('kilt')">
+          Next ▶ Select a Kilt
+        </button>
       </div>
-
-      <!-- ✅ Tie section (now collapsible) -->
-      <div class="collapsible">
-        <h3 class="section-heading collapsible-toggle">Select a Tie<span class="arrow">▼</span></h3>
-
-        <div class="collapsible-content">
-          <div class="section">
-            <div class="thumbs">
-              <div
-                v-for="tie in ties"
-                :key="tie.name"
-                class="thumb-container"
-                @click="selections.tie = tie"
-                :class="{ selected: selections.tie.name === tie.name }"
-              >
-                <img
-                  :src="`${basePath}images/${tie.swatch}`"
-                  :alt="tie.name"
-                />
-                <p class="thumb-label">{{ tie.name }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
+  </div>
+
+  <!-- Kilt section -->
+  <div class="collapsible" :class="{ active: currentSection === 'kilt' }">
+    <h3 class="section-heading collapsible-toggle"
+        @click="toggleSection('kilt')">
+      Select a Kilt <span class="arrow">▼</span>
+    </h3>
+    <div class="collapsible-content">
+      <div class="section">
+        <div class="thumbs">
+          <div v-for="kilt in kilts"
+               :key="kilt.name"
+               class="thumb-container"
+               @click="selections.kilt = kilt"
+               :class="{ selected: selections.kilt.name === kilt.name }">
+            <img :src="`${basePath}images/${kilt.swatch}`" :alt="kilt.name" />
+            <p class="thumb-label">{{ kilt.name }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="collapsible-footer">
+        <button class="nav-btn prev" @click="goToSection('jacket')">
+          ◀ Previous Select a Jacket
+        </button>
+        <button class="nav-btn next" @click="goToSection('tie')">
+          Next ▶ Select a Tie
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tie section -->
+  <div class="collapsible" :class="{ active: currentSection === 'tie' }">
+    <h3 class="section-heading collapsible-toggle"
+        @click="toggleSection('tie')">
+      Select a Tie <span class="arrow">▼</span>
+    </h3>
+    <div class="collapsible-content">
+      <div class="section">
+        <div class="thumbs">
+          <div v-for="tie in ties"
+               :key="tie.name"
+               class="thumb-container"
+               @click="selections.tie = tie"
+               :class="{ selected: selections.tie.name === tie.name }">
+            <img :src="`${basePath}images/${tie.swatch}`" :alt="tie.name" />
+            <p class="thumb-label">{{ tie.name }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="collapsible-footer">
+        <button class="nav-btn prev" @click="goToSection('kilt')">
+          ◀ Previous Select a Kilt
+        </button>
+        <button class="nav-btn next" @click="goToSection('jacket')">
+          Next ▶ Select a Jacket
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
     <!-- Right column: preview -->
     <div class="preview">
@@ -95,37 +114,38 @@
 export default {
   data() {
     return {
+      currentSection: 'jacket', // default open section
       jackets: [
-        { name: 'Charcoal',       swatch: 'swatch-charcoal.png',      preview: 'jacket-charcoal.png' },
-        { name: 'Midnight Blue',  swatch: 'swatch-midnightBlue.png',  preview: 'jacket-midnightBlue.png' },
-        { name: 'Light Grey',     swatch: 'swatch-lightGrey.png',     preview: 'jacket-lightGrey.png' },
-        { name: 'Lovat Blue',     swatch: 'swatch-lovatBlue.png',     preview: 'jacket-lovatBlue.png' },
-        { name: 'Moss Green',     swatch: 'swatch-mossGreen.png',     preview: 'jacket-mossGreen.png' },
-        { name: 'Peat Brown',     swatch: 'swatch-peatBrown.png',     preview: 'jacket-peatBrown.png' }
+        { name: 'Charcoal', swatch: 'swatch-charcoal.png', preview: 'jacket-charcoal.png' },
+        { name: 'Midnight Blue', swatch: 'swatch-midnightBlue.png', preview: 'jacket-midnightBlue.png' },
+        { name: 'Light Grey', swatch: 'swatch-lightGrey.png', preview: 'jacket-lightGrey.png' },
+        { name: 'Lovat Blue', swatch: 'swatch-lovatBlue.png', preview: 'jacket-lovatBlue.png' },
+        { name: 'Moss Green', swatch: 'swatch-mossGreen.png', preview: 'jacket-mossGreen.png' },
+        { name: 'Peat Brown', swatch: 'swatch-peatBrown.png', preview: 'jacket-peatBrown.png' }
       ],
       kilts: [
-        { name: 'Ancient Patriot',    swatch: 'swatch-ancientPatriot.png',    preview: 'kilt-ancientPatriot.png' },
-        { name: 'Beatson',            swatch: 'swatch-beatson.png',           preview: 'kilt-beatson.png' },
-        { name: 'Buchanan Hunting',   swatch: 'swatch-buchanan.png',          preview: 'kilt-buchanan.png' },
-        { name: 'Grey Slanj',         swatch: 'swatch-greySlanj.png',         preview: 'kilt-greySlanj.png' },
-        { name: 'Isle of Skye',       swatch: 'swatch-isleOfSkye.png',        preview: 'kilt-isleOfSkye.png' },
-        { name: 'Manx Hunting',       swatch: 'swatch-manx.png',              preview: 'kilt-manx.png' },
-        { name: 'Maple Leaf',         swatch: 'swatch-mapleLeaf.png',         preview: 'kilt-mapleLeaf.png' },
-        { name: 'Spirit of Glasgow',  swatch: 'swatch-spiritOfGlasgow.png',   preview: 'kilt-spiritOfGlasgow.png' },
-        { name: 'St Mirren FC',       swatch: 'swatch-stMirren.png',          preview: 'kilt-stMirren.png' },
-        { name: 'Weathered Patriot',  swatch: 'swatch-weatheredPatriot.png',  preview: 'kilt-weatheredPatriot.png' },
+        { name: 'Ancient Patriot', swatch: 'swatch-ancientPatriot.png', preview: 'kilt-ancientPatriot.png' },
+        { name: 'Beatson', swatch: 'swatch-beatson.png', preview: 'kilt-beatson.png' },
+        { name: 'Buchanan Hunting', swatch: 'swatch-buchanan.png', preview: 'kilt-buchanan.png' },
+        { name: 'Grey Slanj', swatch: 'swatch-greySlanj.png', preview: 'kilt-greySlanj.png' },
+        { name: 'Isle of Skye', swatch: 'swatch-isleOfSkye.png', preview: 'kilt-isleOfSkye.png' },
+        { name: 'Manx Hunting', swatch: 'swatch-manx.png', preview: 'kilt-manx.png' },
+        { name: 'Maple Leaf', swatch: 'swatch-mapleLeaf.png', preview: 'kilt-mapleLeaf.png' },
+        { name: 'Spirit of Glasgow', swatch: 'swatch-spiritOfGlasgow.png', preview: 'kilt-spiritOfGlasgow.png' },
+        { name: 'St Mirren FC', swatch: 'swatch-stMirren.png', preview: 'kilt-stMirren.png' },
+        { name: 'Weathered Patriot', swatch: 'swatch-weatheredPatriot.png', preview: 'kilt-weatheredPatriot.png' }
       ],
       ties: [
-        { name: 'Black',          swatch: '/tieSwatches/swatch-black.png',      preview: 'tie-black.png' },
-        { name: 'Champagne',      swatch: '/tieSwatches/swatch-champagne.png',  preview: 'tie-champagne.png' },
-        { name: 'Claret',         swatch: '/tieSwatches/swatch-claret.png',     preview: 'tie-claret.png' },
-        { name: 'Bottle Green',   swatch: '/tieSwatches/swatch-green.png',      preview: 'tie-green.png' },
-        { name: 'Dark Grey',      swatch: '/tieSwatches/swatch-grey.png',       preview: 'tie-grey.png' },
-        { name: 'Navy',           swatch: '/tieSwatches/swatch-navy.png',       preview: 'tie-navy.png' },
-        { name: 'Baby Pink',      swatch: '/tieSwatches/swatch-pink.png',       preview: 'tie-pink.png' },
-        { name: 'Purple',         swatch: '/tieSwatches/swatch-purple.png',     preview: 'tie-purple.png' },
-        { name: 'Dark Red',       swatch: '/tieSwatches/swatch-red.png',        preview: 'tie-red.png' },
-        { name: 'Silver',         swatch: '/tieSwatches/swatch-silver.png',     preview: 'tie-silver.png' },
+        { name: 'Black', swatch: '/tieSwatches/swatch-black.png', preview: 'tie-black.png' },
+        { name: 'Champagne', swatch: '/tieSwatches/swatch-champagne.png', preview: 'tie-champagne.png' },
+        { name: 'Claret', swatch: '/tieSwatches/swatch-claret.png', preview: 'tie-claret.png' },
+        { name: 'Bottle Green', swatch: '/tieSwatches/swatch-green.png', preview: 'tie-green.png' },
+        { name: 'Dark Grey', swatch: '/tieSwatches/swatch-grey.png', preview: 'tie-grey.png' },
+        { name: 'Navy', swatch: '/tieSwatches/swatch-navy.png', preview: 'tie-navy.png' },
+        { name: 'Baby Pink', swatch: '/tieSwatches/swatch-pink.png', preview: 'tie-pink.png' },
+        { name: 'Purple', swatch: '/tieSwatches/swatch-purple.png', preview: 'tie-purple.png' },
+        { name: 'Dark Red', swatch: '/tieSwatches/swatch-red.png', preview: 'tie-red.png' },
+        { name: 'Silver', swatch: '/tieSwatches/swatch-silver.png', preview: 'tie-silver.png' }
       ],
       selections: {
         jacket: { name: 'Charcoal', swatch: 'swatch-charcoal.png', preview: 'jacket-charcoal.png' },
@@ -135,18 +155,19 @@ export default {
     }
   },
 
-computed: {
+  computed: {
     basePath() {
       return import.meta.env.BASE_URL || '/'
     }
   },
 
-  mounted() {
-    document.querySelectorAll('.collapsible-toggle').forEach(toggle => {
-      toggle.addEventListener('click', () => {
-        toggle.parentElement.classList.toggle('active');
-      });
-    });
+  methods: {
+    toggleSection(section) {
+      this.currentSection = (this.currentSection === section ? null : section)
+    },
+    goToSection(section) {
+      this.currentSection = section
+    }
   }
 }
 </script>
@@ -181,18 +202,19 @@ h3 {
 
 .section-heading {
   padding: 0.5%;
-  background-color: #fff;
+  background-color: #f5f5f5;   /* light grey background */
+  color: #a5a5a5;                 /* grey text */
+  border: 1px solid #ccc;      /* grey border */
+  border-radius: 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid #000;
-  border-radius: 6px;
   cursor: pointer;
+
 }
 
 .section {
   background: #e4d8d8;
-  border-radius: 6px;
 }
 
 .collapsible.active {
@@ -203,6 +225,7 @@ h3 {
 .collapsible.active .section-heading {
   border: none;
   border-radius: 0;
+  color: #000;
 }
 
 .collapsible-toggle {
@@ -225,6 +248,34 @@ h3 {
 
 .arrow {
   transition: transform 0.5s ease;
+}
+
+.collapsible-footer {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f9f9f9;
+  border-top: 1px solid #ccc;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+
+.nav-btn:hover {
+  color: #000;
+}
+
+.nav-btn:focus {
+  outline: none;
+  box-shadow: none;
+  background-color: #d4d4d4;
 }
 
 /* Thumbnail sections */
