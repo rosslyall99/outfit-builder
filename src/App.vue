@@ -134,7 +134,7 @@
     <div class="collapsible" :class="{ active: currentSection === 'socks' }">
       <h3 class="section-heading collapsible-toggle"
           @click="toggleSection('socks')">
-        Select Socks <span class="arrow">▼</span>
+        Socks <span class="arrow">▼</span>
       </h3>
       <div class="collapsible-content">
         <div class="section">
