@@ -184,13 +184,16 @@
   <!-- Right column: preview -->
   <div class="preview">
     <div class="preview-stack">
-      <img :src="`${basePath}images/baseBody.png`" class="base-body" />
-      <img :src="`${basePath}images/jacketColors/${selections.jacket.preview}`" class="jacket" />
-      <img :src="`${basePath}images/tieColors/${selections.tie.preview}`" class="tie" />
-      <img :src="`${basePath}images/kiltColors/${selections.kilt.preview}`" class="kilt" />
+      <img src="/images/baseBody.png" class="base-body" />
+      <img v-if="selections.shirt" :src="`${basePath}images/shirtColors/${selections.shirt.preview}`" class="shirt" />
+      <img v-if="selections.jacket" :src="`${basePath}images/jacketColors/${selections.jacket.preview}`" class="jacket" />
+      <img v-if="selections.tie" :src="`${basePath}images/tieColors/${selections.tie.preview}`" class="tie" />
+      <img v-if="selections.kilt" :src="`${basePath}images/kiltColors/${selections.kilt.preview}`" class="kilt" />
+      <img v-if="selections.sporran" :src="`${basePath}images/${selections.sporran.preview}`" class="sporran" />
+      <img v-if="selections.socks" :src="`${basePath}images/${selections.socks.preview}`" class="socks" />
+      <img v-if="selections.shoes" :src="`${basePath}images/${selections.shoes.preview}`" class="shoes" />
     </div>
   </div>
-
   </div>
 </template>
 
@@ -260,6 +263,7 @@ export default {
 #app {
   width: 100%;
   max-width: 100%;
+  padding: 0rem 2rem;
 }
 
 body {
@@ -420,7 +424,6 @@ h3 {
 /* Preview area */
 .preview {
   height: 100vh;
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -428,45 +431,30 @@ h3 {
 }
 
 .preview-stack {
-  max-height: 100vh;           /* never taller than viewport */
-  max-width: 100vw;            /* never wider than viewport */
-  width: auto;
-  height: auto;
-  aspect-ratio: 3 / 4;
-  object-fit: contain;         /* ensures full image fits */
-}
-
-/* Base body scales fluidly */
-.base-body {
-  width: 100%;
-  height: auto;
-  display: block;
   position: relative;
-  z-index: 0;
+  width: 40vw;               /* or 100% if you prefer full width */
+  aspect-ratio: 3 / 4;       /* consistent proportions */
+  max-height: 100vh;
+  background: transparent;
 }
 
-/* Overlays (top half) */
-.jacket,
-.tie {
+/* All layers fill the stack */
+.preview-stack img {
   position: absolute;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;   /* scale with baseBody */
-  height: auto;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
-.jacket { z-index: 2; }
-.tie    { z-index: 3; }
-
-/* Bottom half (example: kilt) */
-.kilt {
-  position: absolute;
-  top: 0%;      /* adjust as needed */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;   /* scale with baseBody */
-  height: auto;
-  z-index: 1;    /* between base and jacket */
-}
+/* Layer order */
+.base-body { z-index: 0; }
+.shirt     { z-index: 1; }
+.jacket    { z-index: 2; }
+.tie       { z-index: 3; }
+.kilt      { z-index: 1; }
+.sporran   { z-index: 5; }
+.socks     { z-index: 6; }
+.shoes     { z-index: 7; }
 </style>
