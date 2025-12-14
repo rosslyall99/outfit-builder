@@ -133,8 +133,7 @@
     <!-- Socks section -->
     <div class="collapsible" :class="{ active: currentSection === 'socks' }">
       <h3 class="section-heading collapsible-toggle"
-          @click="toggleSection('socks')">
-        Socks <span class="arrow">▼</span>
+          @click="toggleSection('socks')">Socks<span class="arrow">▼</span>
       </h3>
       <div class="collapsible-content">
         <div class="section">
@@ -159,8 +158,7 @@
     <!-- Shoes section -->
     <div class="collapsible" :class="{ active: currentSection === 'shoes' }">
       <h3 class="section-heading collapsible-toggle"
-          @click="toggleSection('shoes')">
-        Select Shoes <span class="arrow">▼</span>
+          @click="toggleSection('shoes')">Shoes<span class="arrow">▼</span>
       </h3>
       <div class="collapsible-content">
         <div class="section">
