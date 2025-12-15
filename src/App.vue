@@ -30,7 +30,9 @@
 
       <!-- Shirt section -->
       <div class="collapsible" :class="{ active: currentSection === 'shirt' }">
-        <h3 class="section-heading collapsible-toggle" @click="toggleSection('shirt')">Shirt <span class="arrow">▼</span></h3>
+        <h3 class="section-heading collapsible-toggle" @click="toggleSection('shirt')">
+          Shirt <span class="arrow">▼</span>
+        </h3>
         <div class="collapsible-content">
           <div class="section">
             <div class="thumbs">
@@ -38,9 +40,8 @@
                   :key="shirt.name"
                   class="thumb-container"
                   @click="selections.shirt = shirt"
-                  :class="{ selected: selections.jacket.name === shirt.name }">
-                <img :src="`${basePath}images/shirtSwatches/${shirt.swatch}`"
-                    :alt="shirt.name" />
+                  :class="{ selected: selections.shirt && selections.shirt.name === shirt.name }">
+                <img :src="`${basePath}images/shirtSwatches/${shirt.swatch}`" :alt="shirt.name" />
                 <p class="thumb-label">{{ shirt.name }}</p>
               </div>
             </div>
@@ -66,7 +67,7 @@
                   class="thumb-container"
                   @click="selections.tie = tie"
                   :class="{ selected: selections.tie.name === tie.name }">
-                <img :src="`${basePath}images/${tie.swatch}`" :alt="tie.name" />
+                <img :src="`${basePath}images/tieSwatches/${tie.swatch}`" :alt="tie.name" />
                 <p class="thumb-label">{{ tie.name }}</p>
               </div>
             </div>
@@ -106,34 +107,33 @@
 
       <!-- Sporran section -->
       <div class="collapsible" :class="{ active: currentSection === 'sporran' }">
-        <h3 class="section-heading collapsible-toggle"
-            @click="toggleSection('sporran')">
-          Sporran <span class="arrow">▼</span>
-        </h3>
-        <div class="collapsible-content">
-          <div class="section">
-            <div class="thumbs">
-              <div v-for="sporran in sporrans"
-                  :key="sporran.name"
-                  class="thumb-container"
-                  @click="selections.sporran = sporran"
-                  :class="{ selected: selections.sporran.name === sporran.name }">
-                <img :src="`${basePath}images/${sporran.swatch}`" :alt="sporran.name" />
-                <p class="thumb-label">{{ sporran.name }}</p>
-              </div>
+      <h3 class="section-heading collapsible-toggle" @click="toggleSection('sporran')">
+        Sporran <span class="arrow">▼</span>
+      </h3>
+      <div class="collapsible-content">
+        <div class="section">
+          <div class="thumbs">
+            <div v-for="sporran in sporrans"
+                :key="sporran.name"
+                class="thumb-container"
+                @click="selections.sporran = sporran"
+                :class="{ selected: selections.sporran && selections.sporran.name === sporran.name }">
+              <img :src="`${basePath}images/sporranSwatches/${sporran.swatch}`" :alt="sporran.name" />
+              <p class="thumb-label">{{ sporran.name }}</p>
             </div>
           </div>
-          <div class="collapsible-footer">
-            <button class="nav-btn prev" @click="goToSection('kilt')">◀ Kilt</button>
-            <button class="nav-btn next" @click="goToSection('socks')">Socks ▶</button>
-          </div>
         </div>
+        <div class="collapsible-footer">
+          <button class="nav-btn prev" @click="goToSection('kilt')">◀ Kilt</button>
+          <button class="nav-btn next" @click="goToSection('socks')">Socks ▶</button>
+        </div>
+      </div>
       </div>
     
       <!-- Socks section -->
       <div class="collapsible" :class="{ active: currentSection === 'socks' }">
-        <h3 class="section-heading collapsible-toggle"
-            @click="toggleSection('socks')">Socks<span class="arrow">▼</span>
+        <h3 class="section-heading collapsible-toggle" @click="toggleSection('socks')">
+          Socks <span class="arrow">▼</span>
         </h3>
         <div class="collapsible-content">
           <div class="section">
@@ -142,8 +142,8 @@
                   :key="socks.name"
                   class="thumb-container"
                   @click="selections.socks = socks"
-                  :class="{ selected: selections.socks.name === socks.name }">
-                <img :src="`${basePath}images/${socks.swatch}`" :alt="socks.name" />
+                  :class="{ selected: selections.socks && selections.socks.name === socks.name }">
+                <img :src="`${basePath}images/sockSwatches/${socks.swatch}`" :alt="socks.name" />
                 <p class="thumb-label">{{ socks.name }}</p>
               </div>
             </div>
@@ -157,8 +157,8 @@
 
       <!-- Shoes section -->
       <div class="collapsible" :class="{ active: currentSection === 'shoes' }">
-        <h3 class="section-heading collapsible-toggle"
-            @click="toggleSection('shoes')">Shoes<span class="arrow">▼</span>
+        <h3 class="section-heading collapsible-toggle" @click="toggleSection('shoes')">
+          Shoes <span class="arrow">▼</span>
         </h3>
         <div class="collapsible-content">
           <div class="section">
@@ -167,14 +167,14 @@
                   :key="shoes.name"
                   class="thumb-container"
                   @click="selections.shoes = shoes"
-                  :class="{ selected: selections.shoes.name === shoes.name }">
-                <img :src="`${basePath}images/${shoes.swatch}`" :alt="shoes.name" />
+                  :class="{ selected: selections.shoes && selections.shoes.name === shoes.name }">
+                <img :src="`${basePath}images/shoeSwatches/${shoes.swatch}`" :alt="shoes.name" />
                 <p class="thumb-label">{{ shoes.name }}</p>
               </div>
             </div>
           </div>
           <div class="collapsible-footer">
-            <button class="nav-btn prev" @click="goToSection('socks')">◀ Sporran</button>
+            <button class="nav-btn prev" @click="goToSection('socks')">◀ Socks</button>
             <button class="nav-btn next" @click="goToSection('jacket')">Jacket ▶</button>
           </div>
         </div>
@@ -195,7 +195,12 @@
       </div>
       <div class="section-buttons">
           <button class="section-button"@click="openModal('jacket', jackets, 'Jacket')">Jacket</button>
+          <button class="section-button"@click="openModal('shirt', shirts, 'Shirt')">Shirt</button>
+          <button class="section-button"@click="openModal('tie', ties, 'Tie')">Tie</button>
           <button class="section-button"@click="openModal('kilt', kilts, 'Kilt')">Kilt</button>
+          <button class="section-button"@click="openModal('sporran', sporrans, 'Sporran')">Sporran</button>
+          <button class="section-button"@click="openModal('socks', sockss, 'Socks')">Socks</button>
+          <button class="section-button"@click="openModal('shoes', shoess, 'Shoes')">Shoes</button>
       </div>
     </div>
 
@@ -245,16 +250,16 @@ export default {
         { name: 'Weathered Patriot', swatch: 'swatch-weatheredPatriot.png', preview: 'kilt-weatheredPatriot.png', folder: 'kiltSwatches' }
       ],
       ties: [
-        { name: 'Black', swatch: '/tieSwatches/swatch-black.png', preview: 'tie-black.png' },
-        { name: 'Champagne', swatch: '/tieSwatches/swatch-champagne.png', preview: 'tie-champagne.png' },
-        { name: 'Claret', swatch: '/tieSwatches/swatch-claret.png', preview: 'tie-claret.png' },
-        { name: 'Bottle Green', swatch: '/tieSwatches/swatch-green.png', preview: 'tie-green.png' },
-        { name: 'Dark Grey', swatch: '/tieSwatches/swatch-grey.png', preview: 'tie-grey.png' },
-        { name: 'Navy', swatch: '/tieSwatches/swatch-navy.png', preview: 'tie-navy.png' },
-        { name: 'Baby Pink', swatch: '/tieSwatches/swatch-pink.png', preview: 'tie-pink.png' },
-        { name: 'Purple', swatch: '/tieSwatches/swatch-purple.png', preview: 'tie-purple.png' },
-        { name: 'Dark Red', swatch: '/tieSwatches/swatch-red.png', preview: 'tie-red.png' },
-        { name: 'Silver', swatch: '/tieSwatches/swatch-silver.png', preview: 'tie-silver.png' }
+        { name: 'Black', swatch: 'swatch-black.png', preview: 'tie-black.png', folder: 'tieSwatches' },
+        { name: 'Champagne', swatch: 'swatch-champagne.png', preview: 'tie-champagne.png', folder: 'tieSwatches' },
+        { name: 'Claret', swatch: 'swatch-claret.png', preview: 'tie-claret.png', folder: 'tieSwatches' },
+        { name: 'Bottle Green', swatch: 'swatch-green.png', preview: 'tie-green.png', folder: 'tieSwatches' },
+        { name: 'Dark Grey', swatch: 'swatch-grey.png', preview: 'tie-grey.png', folder: 'tieSwatches' },
+        { name: 'Navy', swatch: 'swatch-navy.png', preview: 'tie-navy.png', folder: 'tieSwatches' },
+        { name: 'Baby Pink', swatch: 'swatch-pink.png', preview: 'tie-pink.png', folder: 'tieSwatches' },
+        { name: 'Purple', swatch: 'swatch-purple.png', preview: 'tie-purple.png', folder: 'tieSwatches' },
+        { name: 'Dark Red', swatch: 'swatch-red.png', preview: 'tie-red.png', folder: 'tieSwatches' },
+        { name: 'Silver', swatch: 'swatch-silver.png', preview: 'tie-silver.png', folder: 'tieSwatches' }
       ],
       selections: {
         jacket: { name: 'Charcoal', swatch: 'swatch-charcoal.png', preview: 'jacket-charcoal.png' },
