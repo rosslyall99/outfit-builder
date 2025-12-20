@@ -179,12 +179,72 @@
           </div>
         </div>
       </div>
+
+      <!-- Face Section -->
+       <div class="collapsible" :class="{ active: currentSection === 'face' }">
+        <h3 class="section-heading collapsible-toggle" @click="toggleSection('face')">
+          Face <span class="arrow">▼</span>
+        </h3>
+
+        <div class="collapsible-content">
+          <div class="section">
+            <div class="thumbs">
+              <div v-for="face in faces"
+                  :key="face.name"
+                  class="thumb-container"
+                  @click="selections.face = face"
+                  :class="{ selected: selections.face && selections.face.name === face.name }">
+                <img :src="`${basePath}images/${face.folder}/${face.swatch}`" :alt="face.name" />
+                <p class="thumb-label">{{ face.name }}</p>
+              </div>
+              <div class="thumb-container upload-face" @click="$refs.faceUpload.click()">
+                <div class="upload-thumb">
+                  <span>+</span>
+                </div>
+                <p class="thumb-label">Upload</p>
+              </div>
+            </div>
+            <div v-if="selections.face && selections.face.folder === null" class="face-adjust-controls">
+              <div class="adjust-row">
+                <button @click="nudgeY(-5)">⬆️</button>
+              </div>
+              <div class="adjust-row">
+                <button @click="nudgeX(-5)">⬅️</button>
+                <button @click="nudgeX(5)">➡️</button>
+              </div>
+              <div class="adjust-row">
+                <button @click="nudgeY(5)">⬇️</button>
+              </div>
+
+              <div class="adjust-row">
+                <button @click="adjustScale(0.025)">🔍➕</button>
+                <button @click="adjustScale(-0.025)">🔍➖</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="collapsible-footer">
+            <button class="nav-btn prev" @click="goToSection('jacket')">◀ Jacket</button>
+            <button class="nav-btn next" @click="goToSection('shirt')">Shirt ▶</button>
+          </div>
+        </div>
+
+        <input
+          type="file"
+          accept="image/*"
+          ref="faceUpload"
+          @change="handleFaceUpload"
+          style="display: none;"
+        >
+      </div>
     </div>
 
     <!-- Right column: preview -->
     <div class="preview">
       <div class="preview-stack">
-        <img src="/images/baseBody.png" class="base-body" />
+        <img src="/images/baseBodynoHead.png" class="base-body" />
+        <img v-if="selections.face" :src="faceSrc" :class="['face', selections.face.folder === null ? 'uploaded-face' : '']"   :style="uploadedFaceStyle"
+ />
         <img v-if="selections.shirt" :src="`${basePath}images/shirtColors/${selections.shirt.preview}`" class="shirt" />
         <img v-if="selections.jacket" :src="`${basePath}images/jacketColors/${selections.jacket.preview}`" class="jacket" />
         <img v-if="selections.tie" :src="`${basePath}images/tieColors/${selections.tie.preview}`" class="tie" />
@@ -201,6 +261,7 @@
           <button class="section-button"@click="openModal('sporran', sporrans, 'Sporran')">Sporran</button>
           <button class="section-button"@click="openModal('socks', sockss, 'Socks')">Socks</button>
           <button class="section-button"@click="openModal('shoes', shoess, 'Shoes')">Shoes</button>
+          <button class="section-button"@click="openModal('face', faces, 'Face')">Face</button>
       </div>
     </div>
 
@@ -214,7 +275,7 @@
               :key="option.name"
               class="thumb-container"
               @click="selectOption(option)">
-            <img :src="`${basePath}images/${option.folder}/${option.swatch}`" :alt="option.name" />
+            <img :src="`${basePath}images/${option.folder}/${option.preview}`" :alt="option.name" />
             <p class="thumb-label">{{ option.name }}</p>
           </div>
         </div>
@@ -229,6 +290,11 @@ export default {
   data() {
     return {
       currentSection: 'jacket', // default open section
+      faces: [
+        { name: 'Blonde', swatch: 'swatch-blonde.png', preview: 'face-blonde.png', folder: 'faceSwatches' },
+        { name: 'Brown', swatch: 'swatch-brown.png', preview: 'face-brown.png', folder: 'faceSwatches' },
+        { name: 'Black', swatch: 'swatch-black.png', preview: 'face-black.png', folder: 'faceSwatches' }
+      ],
       jackets: [
         { name: 'Charcoal', swatch: 'swatch-charcoal.png', preview: 'jacket-charcoal.png', folder: 'jacketSwatches' },
         { name: 'Midnight Blue', swatch: 'swatch-midnightBlue.png', preview: 'jacket-midnightBlue.png', folder: 'jacketSwatches' },
@@ -262,9 +328,15 @@ export default {
         { name: 'Silver', swatch: 'swatch-silver.png', preview: 'tie-silver.png', folder: 'tieSwatches' }
       ],
       selections: {
+        face: null,
         jacket: { name: 'Charcoal', swatch: 'swatch-charcoal.png', preview: 'jacket-charcoal.png' },
         kilt: { name: 'Isle of Skye', swatch: 'swatch-isleOfSkye.png', preview: 'kilt-spiritOfGlasgow.png' },
         tie: { name: 'Silver', swatch: 'swatch-silver.png', preview: 'tie-silver.png' }
+      },
+      uploadedFaceTransform: {
+        scale: 0.19,
+        x: -5,
+        y: 5
       },
       showModal: false,
       modalOptions: [],
@@ -277,6 +349,32 @@ export default {
   computed: {
     basePath() {
       return import.meta.env.BASE_URL || '/'
+    },
+    faceSrc() {
+      if (!this.selections.face) return null
+
+      const preview = this.selections.face.preview
+
+      // Uploaded image (data URL)
+      if (preview.startsWith('data:')) {
+        return preview
+      }
+
+      // Preloaded face — use its folder
+      const folder = this.selections.face.folder || 'faceSwatches'
+      return `${this.basePath}images/${folder}/${preview}`
+    },
+    uploadedFaceStyle() {
+      if (!this.selections.face || this.selections.face.folder !== null) {
+        return {}
+      }
+
+      const t = this.uploadedFaceTransform
+
+      return {
+        transform: `translate(${t.x}px, ${t.y}px) scale(${t.scale})`,
+        transformOrigin: 'top center'
+      }
     }
   },
 
@@ -296,6 +394,34 @@ export default {
     selectOption(option) {
       this.selections[this.modalSection] = option
       this.showModal = false
+    },
+    handleFaceUpload(event) {
+      const file = event.target.files[0]
+      if (!file) return
+
+      const reader = new FileReader()
+
+      reader.onload = e => {
+        this.selections.face = {
+          name: 'Uploaded Face',
+          preview: e.target.result,
+          folder: null
+        }
+        this.$refs.faceUpload.value = null
+      }
+
+      reader.readAsDataURL(file)
+    },
+    nudgeX(amount) {
+      this.uploadedFaceTransform.x += amount
+    },
+
+    nudgeY(amount) {
+      this.uploadedFaceTransform.y += amount
+    },
+
+    adjustScale(amount) {
+      this.uploadedFaceTransform.scale = Math.max(0.1, this.uploadedFaceTransform.scale + amount)
     }
   }
 }
@@ -490,15 +616,76 @@ h3 {
   object-fit: contain;
 }
 
+.uploaded-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform-origin: top center;
+}
+
+.upload-face {
+  cursor: pointer;
+}
+
+.upload-thumb {
+  width: 80px;
+  height: 80px;
+  border: 2px dashed #aaa;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #666;
+  background-color: #f0f0f0;
+}
+
+.upload-thumb:hover {
+  border-color: #000;
+  color: #000;
+}
+
+.face-adjust-controls {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.face-adjust-controls button {
+  padding: 6px 10px;
+  font-size: 1.2rem;
+  border: 1px solid #aaa;
+  background: #fafafa;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adjust-row {
+  display: flex;
+  gap: 6px;
+}
+
 /* Layer order */
-.base-body { z-index: 1; }
-.shirt     { z-index: 2; }
-.jacket    { z-index: 3; }
-.tie       { z-index: 4; }
-.kilt      { z-index: 2; }
-.sporran   { z-index: 6; }
-.socks     { z-index: 7; }
-.shoes     { z-index: 8; }
+.base-body      { z-index: 1; }
+.face           { z-index: 2; }
+.uploaded-face  { z-index: 2; }
+.shirt          { z-index: 2; }
+.jacket         { z-index: 3; }
+.tie            { z-index: 4; }
+.kilt           { z-index: 2; }
+.sporran        { z-index: 6; }
+.socks          { z-index: 7; }
+.shoes          { z-index: 8; }
 
 /* Modal*/
 .section-buttons {
