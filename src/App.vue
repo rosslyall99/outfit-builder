@@ -204,23 +204,6 @@
                 <p class="thumb-label">Upload</p>
               </div>
             </div>
-            <div v-if="selections.face && selections.face.folder === null" class="face-adjust-controls">
-              <div class="adjust-row">
-                <button @click="nudgeY(-5)">⬆️</button>
-              </div>
-              <div class="adjust-row">
-                <button @click="nudgeX(-5)">⬅️</button>
-                <button @click="nudgeX(5)">➡️</button>
-              </div>
-              <div class="adjust-row">
-                <button @click="nudgeY(5)">⬇️</button>
-              </div>
-
-              <div class="adjust-row">
-                <button @click="adjustScale(0.025)">🔍➕</button>
-                <button @click="adjustScale(-0.025)">🔍➖</button>
-              </div>
-            </div>
           </div>
 
           <div class="collapsible-footer">
@@ -253,16 +236,24 @@
         <img v-if="selections.socks" :src="`${basePath}images/${selections.socks.preview}`" class="socks" />
         <img v-if="selections.shoes" :src="`${basePath}images/${selections.shoes.preview}`" class="shoes" />
       </div>
-      <div class="section-buttons">
-          <button class="section-button"@click="openModal('jacket', jackets, 'Jacket')">Jacket</button>
-          <button class="section-button"@click="openModal('shirt', shirts, 'Shirt')">Shirt</button>
-          <button class="section-button"@click="openModal('tie', ties, 'Tie')">Tie</button>
-          <button class="section-button"@click="openModal('kilt', kilts, 'Kilt')">Kilt</button>
-          <button class="section-button"@click="openModal('sporran', sporrans, 'Sporran')">Sporran</button>
-          <button class="section-button"@click="openModal('socks', sockss, 'Socks')">Socks</button>
-          <button class="section-button"@click="openModal('shoes', shoess, 'Shoes')">Shoes</button>
-          <button class="section-button"@click="openModal('face', faces, 'Face')">Face</button>
+      <div v-if="selections.face && selections.face.folder === null" class="face-adjust-overlay">
+        <button @click="nudgeY(-4)">▲</button>
+        <button @click="nudgeX(-4)">◀</button>
+        <button @click="nudgeX(4)">▶</button>
+        <button @click="nudgeY(4)">▼</button>
+        <button @click="adjustScale(0.02)">＋</button>
+        <button @click="adjustScale(-0.02)">－</button>
       </div>
+    </div>
+    <div class="section-buttons">
+        <button class="section-button"@click="openModal('jacket', jackets, 'Jacket')">Jacket</button>
+        <button class="section-button"@click="openModal('shirt', shirts, 'Shirt')">Shirt</button>
+        <button class="section-button"@click="openModal('tie', ties, 'Tie')">Tie</button>
+        <button class="section-button"@click="openModal('kilt', kilts, 'Kilt')">Kilt</button>
+        <button class="section-button"@click="openModal('sporran', sporrans, 'Sporran')">Sporran</button>
+        <button class="section-button"@click="openModal('socks', sockss, 'Socks')">Socks</button>
+        <button class="section-button"@click="openModal('shoes', shoess, 'Shoes')">Shoes</button>
+        <button class="section-button"@click="openModal('face', faces, 'Face')">Face</button>
     </div>
 
     <!-- Mobile modal -->
@@ -275,8 +266,12 @@
               :key="option.name"
               class="thumb-container"
               @click="selectOption(option)">
-            <img :src="`${basePath}images/${option.folder}/${option.preview}`" :alt="option.name" />
+            <img :src="`${basePath}images/${option.folder}/${option.swatch}`" :alt="option.name" />
             <p class="thumb-label">{{ option.name }}</p>
+          </div>
+            <div v-if="modalSection === 'face'" class="thumb-container upload-face" @click="$refs.faceUpload.click()">
+            <div class="upload-thumb"><span>+</span></div>
+            <p class="thumb-label">Upload</p>
           </div>
         </div>
       </div>
@@ -408,6 +403,7 @@ export default {
           folder: null
         }
         this.$refs.faceUpload.value = null
+        this.showModal = false
       }
 
       reader.readAsDataURL(file)
@@ -596,6 +592,7 @@ h3 {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  position: relative;
 }
 
 .preview-stack {
@@ -648,14 +645,6 @@ h3 {
   color: #000;
 }
 
-.face-adjust-controls {
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  align-items: center;
-}
-
 .face-adjust-controls button {
   padding: 6px 10px;
   font-size: 1.2rem;
@@ -670,9 +659,47 @@ h3 {
   justify-content: center;
 }
 
-.adjust-row {
+.face-adjust-overlay {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  gap: 6px;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  z-index: 999;
+}
+
+.face-adjust-overlay button {
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  border: none;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.face-adjust-overlay button:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.mobile-face-adjust {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.mobile-face-adjust button {
+  width: 48px;
+  height: 48px;
+  font-size: 1.4rem;
+  border: 1px solid #aaa;
+  background: #f5f5f5;
+  border-radius: 6px;
 }
 
 /* Layer order */
@@ -745,6 +772,14 @@ h3 {
   color: #000;
 }
 
+.modal .thumbs {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 10px;
+  padding: 10px;
+  width: 100%;
+}
+
 @media (max-width: 768px) {
   .thumbnails {
     display: none;
@@ -761,11 +796,21 @@ h3 {
   .section-buttons {
     display: flex;
   }
+
+  .face-adjust-overlay {
+    display: flex;
+    bottom: 20px;
+  }
+
 }
 
 @media (min-width: 769px) {
   .section-buttons {
     display: none;
+  }
+
+    .face-adjust-overlay {
+    display: flex;
   }
 }
 
