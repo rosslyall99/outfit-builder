@@ -22,8 +22,8 @@
             </div>
           </div>
           <div class="collapsible-footer">
-            <button class="nav-btn prev" @click="goToSection('shoes')">◀ Shoes</button>
-            <button class="nav-btn next" @click="goToSection('shirt')">Shirt ▶</button>
+            <button type="button" class="nav-btn prev" @click="goToSection('shoes')">◀ Shoes</button>
+            <button type="button" class="nav-btn next" @click="goToSection('shirt')">Shirt ▶</button>
           </div>
         </div>
       </div>
@@ -47,8 +47,8 @@
             </div>
           </div>
           <div class="collapsible-footer">
-            <button class="nav-btn prev" @click="goToSection('jacket')">◀ Jacket</button>
-            <button class="nav-btn next" @click="goToSection('tie')">Tie ▶</button>
+            <button type="button" class="nav-btn prev" @click="goToSection('jacket')">◀ Jacket</button>
+            <button type="button" class="nav-btn next" @click="goToSection('tie')">Tie ▶</button>
           </div>
         </div>
       </div>
@@ -73,8 +73,8 @@
             </div>
           </div>
           <div class="collapsible-footer">
-            <button class="nav-btn prev" @click="goToSection('shirt')">◀ Shirt</button>
-            <button class="nav-btn next" @click="goToSection('kilt')">Kilt ▶</button>
+            <button type="button" class="nav-btn prev" @click="goToSection('shirt')">◀ Shirt</button>
+            <button type="button" class="nav-btn next" @click="goToSection('kilt')">Kilt ▶</button>
           </div>
         </div>
       </div>
@@ -99,8 +99,8 @@
             </div>
           </div>
           <div class="collapsible-footer">
-            <button class="nav-btn prev" @click="goToSection('tie')">◀ Tie</button>
-            <button class="nav-btn next" @click="goToSection('sporran')">Sporran ▶</button>
+            <button type="button" class="nav-btn prev" @click="goToSection('tie')">◀ Tie</button>
+            <button type="button" class="nav-btn next" @click="goToSection('sporran')">Sporran ▶</button>
           </div>
         </div>
       </div>
@@ -124,8 +124,8 @@
           </div>
         </div>
         <div class="collapsible-footer">
-          <button class="nav-btn prev" @click="goToSection('kilt')">◀ Kilt</button>
-          <button class="nav-btn next" @click="goToSection('socks')">Socks ▶</button>
+          <button type="button" class="nav-btn prev" @click="goToSection('kilt')">◀ Kilt</button>
+          <button type="button" class="nav-btn next" @click="goToSection('socks')">Socks ▶</button>
         </div>
       </div>
       </div>
@@ -149,8 +149,8 @@
             </div>
           </div>
           <div class="collapsible-footer">
-            <button class="nav-btn prev" @click="goToSection('sporran')">◀ Sporran</button>
-            <button class="nav-btn next" @click="goToSection('shoes')">Shoes ▶</button>
+            <button type="button" class="nav-btn prev" @click="goToSection('sporran')">◀ Sporran</button>
+            <button type="button" class="nav-btn next" @click="goToSection('shoes')">Shoes ▶</button>
           </div>
         </div>
       </div>
@@ -174,8 +174,8 @@
             </div>
           </div>
           <div class="collapsible-footer">
-            <button class="nav-btn prev" @click="goToSection('socks')">◀ Socks</button>
-            <button class="nav-btn next" @click="goToSection('jacket')">Jacket ▶</button>
+            <button type="button" class="nav-btn prev" @click="goToSection('socks')">◀ Socks</button>
+            <button type="button" class="nav-btn next" @click="goToSection('jacket')">Jacket ▶</button>
           </div>
         </div>
       </div>
@@ -197,7 +197,7 @@
                 <img :src="`${basePath}images/${face.folder}/${face.swatch}`" :alt="face.name" />
                 <p class="thumb-label">{{ face.name }}</p>
               </div>
-              <div class="thumb-container upload-face" @click="$refs.faceUpload.click()">
+              <div class="thumb-container upload-face" @click="showFaceSourceChoice = true">
                 <div class="upload-thumb">
                   <span>+</span>
                 </div>
@@ -207,14 +207,15 @@
           </div>
 
           <div class="collapsible-footer">
-            <button class="nav-btn prev" @click="goToSection('jacket')">◀ Jacket</button>
-            <button class="nav-btn next" @click="goToSection('shirt')">Shirt ▶</button>
+            <button type="button" class="nav-btn prev" @click="goToSection('jacket')">◀ Jacket</button>
+            <button type="button" class="nav-btn next" @click="goToSection('shirt')">Shirt ▶</button>
           </div>
         </div>
 
         <input
           type="file"
           accept="image/*"
+          :capture="useCamera ? 'user' : null"
           ref="faceUpload"
           @change="handleFaceUpload"
           style="display: none;"
@@ -237,29 +238,29 @@
         <img v-if="selections.shoes" :src="`${basePath}images/${selections.shoes.preview}`" class="shoes" />
       </div>
       <div v-if="selections.face && selections.face.folder === null" class="face-adjust-overlay">
-        <button @click="nudgeY(-4)">▲</button>
-        <button @click="nudgeX(-4)">◀</button>
-        <button @click="nudgeX(4)">▶</button>
-        <button @click="nudgeY(4)">▼</button>
-        <button @click="adjustScale(0.02)">＋</button>
-        <button @click="adjustScale(-0.02)">－</button>
+        <button type="button" @click="nudgeY(-4)">▲</button>
+        <button type="button" @click="nudgeX(-4)">◀</button>
+        <button type="button" @click="nudgeX(4)">▶</button>
+        <button type="button" @click="nudgeY(4)">▼</button>
+        <button type="button" @click="adjustScale(0.02)">＋</button>
+        <button type="button" @click="adjustScale(-0.02)">－</button>
       </div>
     </div>
     <div class="section-buttons">
-        <button class="section-button"@click="openModal('jacket', jackets, 'Jacket')">Jacket</button>
-        <button class="section-button"@click="openModal('shirt', shirts, 'Shirt')">Shirt</button>
-        <button class="section-button"@click="openModal('tie', ties, 'Tie')">Tie</button>
-        <button class="section-button"@click="openModal('kilt', kilts, 'Kilt')">Kilt</button>
-        <button class="section-button"@click="openModal('sporran', sporrans, 'Sporran')">Sporran</button>
-        <button class="section-button"@click="openModal('socks', sockss, 'Socks')">Socks</button>
-        <button class="section-button"@click="openModal('shoes', shoess, 'Shoes')">Shoes</button>
-        <button class="section-button"@click="openModal('face', faces, 'Face')">Face</button>
+        <button type="button" class="section-button"@click="openModal('jacket', jackets, 'Jacket')">Jacket</button>
+        <button type="button" class="section-button"@click="openModal('shirt', shirts, 'Shirt')">Shirt</button>
+        <button type="button" class="section-button"@click="openModal('tie', ties, 'Tie')">Tie</button>
+        <button type="button" class="section-button"@click="openModal('kilt', kilts, 'Kilt')">Kilt</button>
+        <button type="button" class="section-button"@click="openModal('sporran', sporrans, 'Sporran')">Sporran</button>
+        <button type="button" class="section-button"@click="openModal('socks', sockss, 'Socks')">Socks</button>
+        <button type="button" class="section-button"@click="openModal('shoes', shoess, 'Shoes')">Shoes</button>
+        <button type="button" class="section-button"@click="openModal('face', faces, 'Face')">Face</button>
     </div>
 
     <!-- Mobile modal -->
     <div v-if="showModal" class="modal">
       <div class="modal-content">
-        <button class="modal-close" @click="showModal = false">✕</button>
+        <button type="button" class="modal-close" @click="showModal = false">✕</button>
         <h3>{{ modalSectionLabel }}</h3>
         <div class="thumbs">
           <div v-for="option in modalOptions"
@@ -269,7 +270,7 @@
             <img :src="`${basePath}images/${option.folder}/${option.swatch}`" :alt="option.name" />
             <p class="thumb-label">{{ option.name }}</p>
           </div>
-            <div v-if="modalSection === 'face'" class="thumb-container upload-face" @click="$refs.faceUpload.click()">
+            <div v-if="modalSection === 'face'" class="thumb-container upload-face" @click="showFaceSourceChoice = true">
             <div class="upload-thumb"><span>+</span></div>
             <p class="thumb-label">Upload</p>
           </div>
@@ -277,14 +278,79 @@
       </div>
     </div>
 
+    <!-- Popup #1: Choose camera or upload -->
+    <div v-if="showFaceSourceChoice" class="modal">
+      <div class="modal-content">
+        <button type="button" class="modal-close" @click="showFaceSourceChoice = false">✕</button>
+
+        <h3>Select Photo Source</h3>
+
+        <p>How would you like to add your face?</p>
+
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;">
+          <button type="button" class="nav-btn" @click="chooseCamera">Take Photo with Camera</button>
+          <button type="button" class="nav-btn" @click="chooseUpload">Upload from Phone</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Face photo instructions modal -->
+    <div v-if="showFaceInstructions" class="modal">
+      <div class="modal-content">
+        <button type="button" class="modal-close" @click="showFaceInstructions = false">✕</button>
+        <h3>How to take your photo</h3>
+
+        <p>For the best result:</p>
+        <ul>
+          <li>Stand in front of a plain white or light-coloured wall.</li>
+          <li>Face the camera straight on, at eye level.</li>
+          <li>Make sure your whole head and hair are visible.</li>
+          <li>Avoid strong shadows or bright light behind you.</li>
+        </ul>
+
+        <p><strong>Privacy notice</strong></p>
+        <p>
+          Your photo is not uploaded to any server. It is processed only in your browser
+          and will disappear when you close this page.
+        </p>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 15px;">
+          <button type="button" class="nav-btn" @click="showFaceInstructions = false">Cancel</button>
+          <button type="button" class="nav-btn" @click="continueToCamera">Continue</button>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <pre id="debug-log"
+      style="
+        display:none;
+        position:fixed;
+        bottom:0;
+        left:0;
+        width:100%;
+        max-height:30vh;
+        overflow:auto;
+        background:#000;
+        color:#0f0;
+        font-size:12px;
+        padding:6px;
+        z-index:99999;
+      ">
+  </pre>
+
 </template>
 
 <script>
+  import {
+  FilesetResolver,
+  FaceDetector
+} from "@mediapipe/tasks-vision"
+
 export default {
   data() {
     return {
-      currentSection: 'jacket', // default open section
+      currentSection: 'jacket',
       faces: [
         { name: 'Blonde', swatch: 'swatch-blonde.png', preview: 'face-blonde.png', folder: 'faceSwatches' },
         { name: 'Brown', swatch: 'swatch-brown.png', preview: 'face-brown.png', folder: 'faceSwatches' },
@@ -322,6 +388,10 @@ export default {
         { name: 'Dark Red', swatch: 'swatch-red.png', preview: 'tie-red.png', folder: 'tieSwatches' },
         { name: 'Silver', swatch: 'swatch-silver.png', preview: 'tie-silver.png', folder: 'tieSwatches' }
       ],
+      shirts: [],
+      sporrans: [],
+      sockss: [],
+      shoess: [],
       selections: {
         face: null,
         jacket: { name: 'Charcoal', swatch: 'swatch-charcoal.png', preview: 'jacket-charcoal.png' },
@@ -337,7 +407,11 @@ export default {
       modalOptions: [],
       modalSection: null,
       modalSectionLabel: '',
-      modalFolder: '' 
+      modalFolder: '',
+      useCamera: false,
+      faceDetector: null,       // native FaceDetector
+      showFaceSourceChoice: false,
+      showFaceInstructions: false
     }
   },
 
@@ -347,25 +421,14 @@ export default {
     },
     faceSrc() {
       if (!this.selections.face) return null
-
       const preview = this.selections.face.preview
-
-      // Uploaded image (data URL)
-      if (preview.startsWith('data:')) {
-        return preview
-      }
-
-      // Preloaded face — use its folder
+      if (preview.startsWith('data:')) return preview
       const folder = this.selections.face.folder || 'faceSwatches'
       return `${this.basePath}images/${folder}/${preview}`
     },
     uploadedFaceStyle() {
-      if (!this.selections.face || this.selections.face.folder !== null) {
-        return {}
-      }
-
+      if (!this.selections.face || this.selections.face.folder !== null) return {}
       const t = this.uploadedFaceTransform
-
       return {
         transform: `translate(${t.x}px, ${t.y}px) scale(${t.scale})`,
         transformOrigin: 'top center'
@@ -379,8 +442,8 @@ export default {
     },
     goToSection(section) {
       this.currentSection = section
-    }, 
-    openModal(section, options, label, folder) {
+    },
+    openModal(section, options, label) {
       this.modalSection = section
       this.modalOptions = options
       this.modalSectionLabel = label
@@ -390,35 +453,241 @@ export default {
       this.selections[this.modalSection] = option
       this.showModal = false
     },
-    handleFaceUpload(event) {
+
+    async handleFaceUpload(event) {
+      event.preventDefault()
+      event.stopPropagation()
+
       const file = event.target.files[0]
       if (!file) return
 
+      this.debug("File selected: " + file.name)
+      this.showModal = false
+
       const reader = new FileReader()
 
-      reader.onload = e => {
-        this.selections.face = {
-          name: 'Uploaded Face',
-          preview: e.target.result,
-          folder: null
+      reader.onload = async e => {
+        this.debug("FileReader loaded")
+
+        const img = new Image()
+
+        img.onload = async () => {
+          this.debug("Image loaded: " + img.width + "x" + img.height)
+
+          // Downscale for performance
+          const MAX_SIZE = 512
+          let srcW = img.width
+          let srcH = img.height
+          let scale = 1
+
+          if (img.width > MAX_SIZE || img.height > MAX_SIZE) {
+            scale = MAX_SIZE / Math.max(img.width, img.height)
+            srcW = img.width * scale
+            srcH = img.height * scale
+          }
+
+          // Draw to canvas (this is our single source)
+          const inputCanvas = document.createElement("canvas")
+          inputCanvas.width = srcW
+          inputCanvas.height = srcH
+          const ictx = inputCanvas.getContext("2d")
+          ictx.drawImage(img, 0, 0, srcW, srcH)
+          this.debug("Canvas prepared: " + srcW + "x" + srcH)
+
+          let cropX, cropY, cropW, cropH
+
+          // ⭐ MEDIA PIPE TASKS — HYBRID CROP
+          if (this.faceDetector) {
+            try {
+              this.debug("Running MediaPipe FaceDetector…")
+
+              const result = await this.faceDetector.detect(inputCanvas)
+
+              if (result.detections.length > 0) {
+                const det = result.detections[0]
+
+                // Extract keypoints
+                const keypoints = det.keypoints
+                const xs = keypoints.map(p => p.x)
+                const ys = keypoints.map(p => p.y)
+
+                const minX = Math.min(...xs)
+                const maxX = Math.max(...xs)
+                const minY = Math.min(...ys)
+                const maxY = Math.max(...ys)
+
+                const boxW = maxX - minX
+                const boxH = maxY - minY
+
+                const padding = 0.15
+
+                // Keypoint crop
+                cropX = Math.max(0, minX - boxW * padding)
+                cropY = Math.max(0, minY - boxH * padding)
+                cropW = Math.min(inputCanvas.width - cropX, boxW * (1 + padding * 2))
+                cropH = Math.min(inputCanvas.height - cropY, boxH * (1 + padding * 2))
+
+                this.debug("Crop (Keypoints): " + [cropX, cropY, cropW, cropH].join(", "))
+
+                // ⭐ Fallback if keypoint crop is too small
+                if (cropW < 50 || cropH < 50) {
+                  this.debug("Keypoint crop too small — falling back to bounding box")
+
+                  const box = det.boundingBox
+
+                  cropX = Math.max(0, box.originX - box.width * padding)
+                  cropY = Math.max(0, box.originY - box.height * padding)
+                  cropW = Math.min(inputCanvas.width - cropX, box.width * (1 + padding * 2))
+                  cropH = Math.min(inputCanvas.height - cropY, box.height * (1 + padding * 2))
+
+                  this.debug("Fallback crop (bounding box): " + [cropX, cropY, cropW, cropH].join(", "))
+                }
+
+              } else {
+                this.debug("No face detected — using center crop")
+                const size = Math.min(inputCanvas.width, inputCanvas.height)
+                cropX = (inputCanvas.width - size) / 2
+                cropY = (inputCanvas.height - size) / 2
+                cropW = size
+                cropH = size
+              }
+            } catch (err) {
+              this.debug("MediaPipe detection error: " + err)
+              const size = Math.min(inputCanvas.width, inputCanvas.height)
+              cropX = (inputCanvas.width - size) / 2
+              cropY = (inputCanvas.height - size) / 2
+              cropW = size
+              cropH = size
+            }
+          } else {
+            this.debug("FaceDetector not loaded — using center crop")
+            const size = Math.min(inputCanvas.width, inputCanvas.height)
+            cropX = (inputCanvas.width - size) / 2
+            cropY = (inputCanvas.height - size) / 2
+            cropW = size
+            cropH = size
+          }
+
+          // ⭐ ADD HEADROOM ABOVE THE FACE
+          const headroom = cropH * 0.35   // adjust this number to taste
+          cropY = Math.max(0, cropY - headroom)
+          cropH = Math.min(inputCanvas.height - cropY, cropH + headroom)
+
+          // ⭐ Clamp final crop to valid region
+          cropX = Math.max(0, Math.min(cropX, inputCanvas.width - 1))
+          cropY = Math.max(0, Math.min(cropY, inputCanvas.height - 1))
+          cropW = Math.max(50, Math.min(cropW, inputCanvas.width - cropX))
+          cropH = Math.max(50, Math.min(cropH, inputCanvas.height - cropY))
+
+          this.debug("FINAL CROP BOX: " + [cropX, cropY, cropW, cropH].join(", "))
+
+          // ⭐ DRAW CROPPED IMAGE
+          try {
+            const outCanvas = document.createElement("canvas")
+            outCanvas.width = Math.round(cropW)
+            outCanvas.height = Math.round(cropH)
+
+            const octx = outCanvas.getContext("2d")
+            octx.drawImage(
+              inputCanvas,
+              cropX, cropY, cropW, cropH,
+              0, 0, outCanvas.width, outCanvas.height
+            )
+
+            const cropped = outCanvas.toDataURL("image/png")
+            this.debug("Cropped image created: " + (cropped ? "yes" : "NO"))
+            this.debug("CROPPED LENGTH: " + cropped.length)
+
+            // ⭐ UPDATE FACE SELECTION
+            this.selections.face = {
+              name: "Uploaded Face",
+              preview: cropped,
+              folder: null
+            }
+
+            this.debug("Face selection updated")
+
+            // Reset transform defaults
+            this.uploadedFaceTransform = {
+              scale: 0.19,
+              x: -5,
+              y: 5
+            }
+
+            this.debug("Transform reset")
+
+            this.$refs.faceUpload.value = null
+            this.debug("Upload input cleared")
+          } catch (err) {
+            this.debug("Error during crop/toDataURL/update: " + err)
+          }
         }
-        this.$refs.faceUpload.value = null
-        this.showModal = false
+
+        img.src = e.target.result
+        this.debug("Image src set")
       }
 
       reader.readAsDataURL(file)
+      this.debug("FileReader started")
     },
+
     nudgeX(amount) {
       this.uploadedFaceTransform.x += amount
     },
-
     nudgeY(amount) {
       this.uploadedFaceTransform.y += amount
     },
-
     adjustScale(amount) {
       this.uploadedFaceTransform.scale = Math.max(0.1, this.uploadedFaceTransform.scale + amount)
+    },
+
+    chooseCamera() {
+      this.useCamera = true
+      this.showFaceSourceChoice = false
+      this.showFaceInstructions = true
+    },
+    chooseUpload() {
+      this.useCamera = false
+      this.showFaceSourceChoice = false
+      this.$refs.faceUpload.click()
+    },
+    continueToCamera() {
+      this.showFaceInstructions = false
+      this.$refs.faceUpload.click()
+    },
+
+    async initFaceDetector() {
+      this.debug("Loading MediaPipe FaceDetector…")
+
+      try {
+        const vision = await FilesetResolver.forVisionTasks(
+          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/wasm"
+        )
+
+        this.faceDetector = await FaceDetector.createFromOptions(vision, {
+          baseOptions: {
+            modelAssetPath:
+              "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite"
+          },
+          runningMode: "IMAGE",
+          minDetectionConfidence: 0.5
+        })
+
+        this.debug("MediaPipe FaceDetector loaded")
+      } catch (err) {
+        this.debug("Failed to load MediaPipe FaceDetector: " + err)
+        this.faceDetector = null
+      }
+    },
+
+    debug(msg) {
+      const el = document.getElementById("debug-log")
+      if (el) el.innerText += msg + "\n"
     }
+  },
+
+  mounted() {
+    this.initFaceDetector()
   }
 }
 </script>
@@ -620,7 +889,6 @@ h3 {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  transform-origin: top center;
 }
 
 .upload-face {
@@ -704,8 +972,8 @@ h3 {
 
 /* Layer order */
 .base-body      { z-index: 1; }
-.face           { z-index: 2; }
-.uploaded-face  { z-index: 2; }
+.face           { z-index: 0; }
+.uploaded-face  { z-index: 0; }
 .shirt          { z-index: 2; }
 .jacket         { z-index: 3; }
 .tie            { z-index: 4; }
