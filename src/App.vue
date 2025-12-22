@@ -197,7 +197,7 @@
                 <img :src="`${basePath}images/${face.folder}/${face.swatch}`" :alt="face.name" />
                 <p class="thumb-label">{{ face.name }}</p>
               </div>
-              <div class="thumb-container upload-face" @click="showFaceSourceChoice = true">
+              <div class="thumb-container upload-face" @click="handleUploadClick">
                 <div class="upload-thumb">
                   <span>+</span>
                 </div>
@@ -246,6 +246,7 @@
         <button type="button" @click="adjustScale(-0.02)">－</button>
       </div>
     </div>
+
     <div class="section-buttons">
         <button type="button" class="section-button"@click="openModal('jacket', jackets, 'Jacket')">Jacket</button>
         <button type="button" class="section-button"@click="openModal('shirt', shirts, 'Shirt')">Shirt</button>
@@ -270,7 +271,7 @@
             <img :src="`${basePath}images/${option.folder}/${option.swatch}`" :alt="option.name" />
             <p class="thumb-label">{{ option.name }}</p>
           </div>
-            <div v-if="modalSection === 'face'" class="thumb-container upload-face" @click="showFaceSourceChoice = true">
+            <div v-if="modalSection === 'face'" class="thumb-container upload-face" @click="handleUploadClick">
             <div class="upload-thumb"><span>+</span></div>
             <p class="thumb-label">Upload</p>
           </div>
@@ -299,20 +300,19 @@
       <div class="modal-content">
         <button type="button" class="modal-close" @click="showFaceInstructions = false">✕</button>
         <h3>How to take your photo</h3>
-
-        <p>For the best result:</p>
         <ul>
-          <li>Stand in front of a plain white or light-coloured wall.</li>
-          <li>Face the camera straight on, at eye level.</li>
-          <li>Make sure your whole head and hair are visible.</li>
-          <li>Avoid strong shadows or bright light behind you.</li>
+          <li>Stand in front of a plain white wall</li>
+          <li>Face the camera straight on</li>
+          <li>Ensure your head and hair are visible</li>
+          <li>Avoid shadows or bright lights behind</li>
         </ul>
 
-        <p><strong>Privacy notice</strong></p>
-        <p>
-          Your photo is not uploaded to any server. It is processed only in your browser
-          and will disappear when you close this page.
-        </p>
+        <h3>Privacy notice</h3>
+        <ul>
+          <li>Your photo is not uploaded to any server</li>
+          <li>It is processed only in your browser</li>
+          <li>It will disappear when you close this page</li>
+        </ul>
 
         <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 15px;">
           <button type="button" class="nav-btn" @click="showFaceInstructions = false">Cancel</button>
@@ -409,7 +409,8 @@ export default {
       modalSectionLabel: '',
       modalFolder: '',
       useCamera: false,
-      faceDetector: null,       // native FaceDetector
+      faceDetector: null,
+      uploadInProgress: false,
       showFaceSourceChoice: false,
       showFaceInstructions: false
     }
@@ -419,6 +420,7 @@ export default {
     basePath() {
       return import.meta.env.BASE_URL || '/'
     },
+
     faceSrc() {
       if (!this.selections.face) return null
       const preview = this.selections.face.preview
@@ -426,6 +428,7 @@ export default {
       const folder = this.selections.face.folder || 'faceSwatches'
       return `${this.basePath}images/${folder}/${preview}`
     },
+
     uploadedFaceStyle() {
       if (!this.selections.face || this.selections.face.folder !== null) return {}
       const t = this.uploadedFaceTransform
@@ -433,28 +436,41 @@ export default {
         transform: `translate(${t.x}px, ${t.y}px) scale(${t.scale})`,
         transformOrigin: 'top center'
       }
-    }
+    },
+
+    isMobile() {
+      return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+    } 
   },
 
   methods: {
     toggleSection(section) {
       this.currentSection = (this.currentSection === section ? null : section)
     },
+
     goToSection(section) {
       this.currentSection = section
     },
+
     openModal(section, options, label) {
       this.modalSection = section
       this.modalOptions = options
       this.modalSectionLabel = label
       this.showModal = true
     },
+
     selectOption(option) {
       this.selections[this.modalSection] = option
       this.showModal = false
     },
 
     async handleFaceUpload(event) {
+      if (this.uploadInProgress) {
+        this.debug("Upload blocked — already in progress")
+        return
+      }
+      this.uploadInProgress = true
+
       event.preventDefault()
       event.stopPropagation()
 
@@ -500,7 +516,8 @@ export default {
           if (this.faceDetector) {
             try {
               this.debug("Running MediaPipe FaceDetector…")
-
+              
+              await new Promise(r => setTimeout(r))
               const result = await this.faceDetector.detect(inputCanvas)
 
               if (result.detections.length > 0) {
@@ -569,9 +586,10 @@ export default {
           }
 
           // ⭐ ADD HEADROOM ABOVE THE FACE
-          const headroom = cropH * 0.35   // adjust this number to taste
+          const headroom = cropH * 0.35
+          const neckroom = cropH * 0.15
           cropY = Math.max(0, cropY - headroom)
-          cropH = Math.min(inputCanvas.height - cropY, cropH + headroom)
+          cropH = Math.min(inputCanvas.height - cropY, cropH + headroom + neckroom)
 
           // ⭐ Clamp final crop to valid region
           cropX = Math.max(0, Math.min(cropX, inputCanvas.width - 1))
@@ -621,6 +639,8 @@ export default {
           } catch (err) {
             this.debug("Error during crop/toDataURL/update: " + err)
           }
+
+          this.uploadInProgress = false
         }
 
         img.src = e.target.result
@@ -634,9 +654,11 @@ export default {
     nudgeX(amount) {
       this.uploadedFaceTransform.x += amount
     },
+
     nudgeY(amount) {
       this.uploadedFaceTransform.y += amount
     },
+
     adjustScale(amount) {
       this.uploadedFaceTransform.scale = Math.max(0.1, this.uploadedFaceTransform.scale + amount)
     },
@@ -646,11 +668,13 @@ export default {
       this.showFaceSourceChoice = false
       this.showFaceInstructions = true
     },
+
     chooseUpload() {
       this.useCamera = false
       this.showFaceSourceChoice = false
       this.$refs.faceUpload.click()
     },
+
     continueToCamera() {
       this.showFaceInstructions = false
       this.$refs.faceUpload.click()
@@ -681,14 +705,54 @@ export default {
     },
 
     debug(msg) {
+      if (/Android/i.test(navigator.userAgent)) return
       const el = document.getElementById("debug-log")
       if (el) el.innerText += msg + "\n"
+    },
+
+    handleUploadClick() {
+      if (this.isMobile) {
+        // Mobile → show camera/upload choice
+        this.showFaceSourceChoice = true
+      } else {
+        // Desktop → go straight to file picker
+        this.$refs.faceUpload.click()
+      }
+    },
+
+    cleanupBeforeReload() {
+      this.debug("Cleaning up stale listeners and detectors…")
+
+      // Reset file input completely
+      if (this.$refs.faceUpload) {
+        this.$refs.faceUpload.value = null
+      }
+
+      // Kill any stale detector instance
+      if (this.faceDetector && this.faceDetector.close) {
+        try { this.faceDetector.close() } catch(e) {}
+      }
+
+      this.faceDetector = null
+
+      // Clear any leftover canvases (Android sometimes keeps them alive)
+      const canvases = document.querySelectorAll("canvas")
+      canvases.forEach(c => {
+        try { c.width = 0; c.height = 0 } catch(e) {}
+      })
     }
   },
 
   mounted() {
     this.initFaceDetector()
+    this.cleanupBeforeReload()
+    this.initFaceDetector()
+  },
+
+  beforeUnmount() {
+    this.cleanupBeforeReload()
   }
+
 }
 </script>
 
@@ -939,6 +1003,15 @@ h3 {
   z-index: 999;
 }
 
+@media (max-width: 768px) {
+  .face-adjust-overlay {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
 .face-adjust-overlay button {
   width: 40px;
   height: 40px;
@@ -1046,6 +1119,10 @@ h3 {
   gap: 10px;
   padding: 10px;
   width: 100%;
+}
+
+li {
+  text-align: left;
 }
 
 @media (max-width: 768px) {
