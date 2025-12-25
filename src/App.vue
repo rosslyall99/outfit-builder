@@ -223,30 +223,7 @@
       </div>
     </div>
 
-    <!-- Right column: preview -->
-    <div class="preview">
-      <div class="preview-stack">
-        <img src="/images/baseBodynoHead.png" class="base-body" />
-        <img v-if="selections.face" :src="faceSrc" :class="['face', selections.face.folder === null ? 'uploaded-face' : '']"   :style="uploadedFaceStyle"
- />
-        <img v-if="selections.shirt" :src="`${basePath}images/shirtColors/${selections.shirt.preview}`" class="shirt" />
-        <img v-if="selections.jacket" :src="`${basePath}images/jacketColors/${selections.jacket.preview}`" class="jacket" />
-        <img v-if="selections.tie" :src="`${basePath}images/tieColors/${selections.tie.preview}`" class="tie" />
-        <img v-if="selections.kilt" :src="`${basePath}images/kiltColors/${selections.kilt.preview}`" class="kilt" />
-        <img v-if="selections.sporran" :src="`${basePath}images/${selections.sporran.preview}`" class="sporran" />
-        <img v-if="selections.socks" :src="`${basePath}images/${selections.socks.preview}`" class="socks" />
-        <img v-if="selections.shoes" :src="`${basePath}images/${selections.shoes.preview}`" class="shoes" />
-      </div>
-      <div v-if="selections.face && selections.face.folder === null" class="face-adjust-overlay">
-        <button type="button" @click="nudgeY(-4)">▲</button>
-        <button type="button" @click="nudgeX(-4)">◀</button>
-        <button type="button" @click="nudgeX(4)">▶</button>
-        <button type="button" @click="nudgeY(4)">▼</button>
-        <button type="button" @click="adjustScale(0.02)">＋</button>
-        <button type="button" @click="adjustScale(-0.02)">－</button>
-      </div>
-    </div>
-
+    <!-- Mobile view section buttons -->
     <div class="section-buttons">
         <button type="button" class="section-button"@click="openModal('jacket', jackets, 'Jacket')">Jacket</button>
         <button type="button" class="section-button"@click="openModal('shirt', shirts, 'Shirt')">Shirt</button>
@@ -256,6 +233,37 @@
         <button type="button" class="section-button"@click="openModal('socks', sockss, 'Socks')">Socks</button>
         <button type="button" class="section-button"@click="openModal('shoes', shoess, 'Shoes')">Shoes</button>
         <button type="button" class="section-button"@click="openModal('face', faces, 'Face')">Face</button>
+
+        <!-- Face Adjust Overlay -->
+        <div v-if="selections.face && selections.face.folder === null" class="face-adjust-overlay">
+          <button type="button" @click="nudgeY(-4)">▲</button>
+          <button type="button" @click="nudgeX(-4)">◀</button>
+          <button type="button" @click="nudgeX(4)">▶</button>
+          <button type="button" @click="nudgeY(4)">▼</button>
+          <button type="button" @click="adjustScale(0.02)">＋</button>
+          <button type="button" @click="adjustScale(-0.02)">－</button>
+        </div>
+
+        <div class="bottom-bar">
+          <div class="price-display">£{{ totalPrice }}</div>
+          <button type="button" class="section-button" id="enquire">Enquire</button>
+        </div>
+    </div>
+
+
+    <!-- Outfit preview -->
+    <div class="preview">
+      <div class="preview-stack">
+        <img src="/images/baseBodynoHead.png" class="base-body" />
+        <img v-if="selections.face" :src="faceSrc" :class="['face', selections.face.folder === null ? 'uploaded-face' : '']"   :style="uploadedFaceStyle"/>
+        <img v-if="selections.shirt" :src="`${basePath}images/shirtColors/${selections.shirt.preview}`" class="shirt" />
+        <img v-if="selections.jacket" :src="`${basePath}images/jacketColors/${selections.jacket.preview}`" class="jacket" />
+        <img v-if="selections.tie" :src="`${basePath}images/tieColors/${selections.tie.preview}`" class="tie" />
+        <img v-if="selections.kilt" :src="`${basePath}images/kiltColors/${selections.kilt.preview}`" class="kilt" />
+        <img v-if="selections.sporran" :src="`${basePath}images/${selections.sporran.preview}`" class="sporran" />
+        <img v-if="selections.socks" :src="`${basePath}images/${selections.socks.preview}`" class="socks" />
+        <img v-if="selections.shoes" :src="`${basePath}images/${selections.shoes.preview}`" class="shoes" />
+      </div>
     </div>
 
     <!-- Mobile modal -->
@@ -412,7 +420,13 @@ export default {
       faceDetector: null,
       uploadInProgress: false,
       showFaceSourceChoice: false,
-      showFaceInstructions: false
+      showFaceInstructions: false,
+      PRICE_MAP: {
+        base: 125,
+        tartanPremiums: {'Beatson': 20},
+        shoes: {'Brown': 10},
+        sporran: {'Copper': 30},
+        shirt: 20},
     }
   },
 
@@ -440,7 +454,42 @@ export default {
 
     isMobile() {
       return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
-    } 
+    },
+
+    totalPrice() {
+      let total = this.PRICE_MAP.base;
+
+      // Tartan surcharge
+      if (this.selections.kilt && this.selections.kilt.name) {
+        const tartan = this.selections.kilt.name;
+        if (this.PRICE_MAP.tartanPremiums[tartan]) {
+          total += this.PRICE_MAP.tartanPremiums[tartan];
+        }
+      }
+
+      // Shoes surcharge
+      if (this.selections.shoes && this.selections.shoes.name) {
+        const shoes = this.selections.shoes.name;
+        if (this.PRICE_MAP.shoes[shoes]) {
+          total += this.PRICE_MAP.shoes[shoes];
+        }
+      }
+
+      // Sporran surcharge
+      if (this.selections.sporran && this.selections.sporran.name) {
+        const sporran = this.selections.sporran.name;
+        if (this.PRICE_MAP.sporran[sporran]) {
+          total += this.PRICE_MAP.sporran[sporran];
+        }
+      }
+
+      // Shirt purchase
+      if (this.selections.shirt && this.selections.shirt.name) {
+        total += this.PRICE_MAP.shirt;
+      }
+
+      return total;
+    }
   },
 
   methods: {
@@ -760,12 +809,13 @@ export default {
 #app {
   width: 100%;
   max-width: 100%;
-  padding: 0rem 2rem;
+  padding: 0px;
 }
 
 body {
   background-color: white;
   color: #000;
+  padding: 0px;
 }
 
 h3 {
@@ -773,10 +823,11 @@ h3 {
 }
 
 .outfit-builder {
-  display: grid;
-  grid-template-columns: 1fr auto;
+  display: flex;
+  /* grid-template-columns: 1fr auto; */
   width: 100%;
   height: 100vh;
+  padding: 0px;
 }
 
 .collapsible {
@@ -874,6 +925,7 @@ h3 {
 /* Thumbnail sections */
 .thumbnails {
   display: flex;
+  position: relative;
   flex-direction: column;
   gap: 1%;
   margin-right: 1.5%;
@@ -881,7 +933,7 @@ h3 {
 
 .thumbs {
   display: grid;
-  padding: 0.5%;
+  padding: 1%;
   grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   gap: 0.5%;
 }
@@ -920,21 +972,25 @@ h3 {
 
 /* Preview area */
 .preview {
+  width: 80%;
   height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
-  overflow: hidden;
+  align-items: flex-start;
   position: relative;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .preview-stack {
   position: relative;
-  width: 40vw;               /* or 100% if you prefer full width */
-  aspect-ratio: 3 / 4;       /* consistent proportions */
-  max-height: 100vh;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  max-height: 100%;
+  margin: 0 auto;          /* centres horizontally */
   background: transparent;
 }
+
 
 /* All layers fill the stack */
 .preview-stack img {
@@ -977,70 +1033,34 @@ h3 {
   color: #000;
 }
 
-.face-adjust-controls button {
-  padding: 6px 10px;
-  font-size: 1.2rem;
-  border: 1px solid #aaa;
-  background: #fafafa;
-  border-radius: 6px;
-  cursor: pointer;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .face-adjust-overlay {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
-  gap: 10px;
-  padding: 8px 12px;
-  border-radius: 8px;
+  gap: 8px;
+  border-radius: 4px;
   z-index: 999;
+  background: rgba(10,10,104, 0.2)  
 }
 
 @media (max-width: 768px) {
   .face-adjust-overlay {
-    position: fixed;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
+    flex-direction: column;
+    top: 0px;
+    right: 0px;
+    padding: 8px;
   }
 }
 
 .face-adjust-overlay button {
-  width: 40px;
-  height: 40px;
-  font-size: 1.2rem;
+  height: 2.5rem;
+  font-size: 1rem;
   border: none;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 6px;
+  background: rgba(10, 19, 104, 0.4);
+  border-radius: 4px;
   cursor: pointer;
 }
 
 .face-adjust-overlay button:hover {
-  background: rgba(0, 0, 0, 0.5);
-}
-
-.mobile-face-adjust {
-  margin-top: 12px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-}
-
-.mobile-face-adjust button {
-  width: 48px;
-  height: 48px;
-  font-size: 1.4rem;
-  border: 1px solid #aaa;
-  background: #f5f5f5;
-  border-radius: 6px;
+  background: rgba(10, 19, 104, 0.8);
 }
 
 /* Layer order */
@@ -1057,23 +1077,37 @@ h3 {
 
 /* Modal*/
 .section-buttons {
-  position: absolute;
-  top: auto; 
-  left: 10px;
+  width: 20%;
+  min-width: 100px;
+  position: relative;
+  top: 0px;
+  left: 0px;
   display: flex;
   flex-direction: column;
-  gap: 8px;   /* space between buttons */
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 8px;
+  background: rgba(10, 19, 104, 0.2);
   z-index: 999;
+  border-radius: 4px;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+@media (min-width: 769px) {
+  .section-buttons {
+    display: none;
+  }
 }
 
 .section-button {
   top: 10px;
   left: 10px;
-  background: rgba(0,0,0,0.4);
+  background: rgba(10, 19, 104, 0.4);
   color: #fff;
   border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
+  padding: 8px;
+  border-radius: 4px;
   z-index: 10;
 }
 
@@ -1116,13 +1150,29 @@ h3 {
 .modal .thumbs {
   display: grid !important;
   grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  gap: 10px;
-  padding: 10px;
+  gap: 4px;
   width: 100%;
 }
 
 li {
   text-align: left;
+}
+
+.bottom-bar {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(10, 19, 104, 0.2);
+  z-index: 999;
+  border-radius: 4px;
+}
+
+.price-display {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 4px;
 }
 
 @media (max-width: 768px) {
@@ -1138,15 +1188,6 @@ li {
     max-height: none;
   }
 
-  .section-buttons {
-    display: flex;
-  }
-
-  .face-adjust-overlay {
-    display: flex;
-    bottom: 20px;
-  }
-
 }
 
 @media (min-width: 769px) {
@@ -1154,7 +1195,7 @@ li {
     display: none;
   }
 
-    .face-adjust-overlay {
+  .face-adjust-overlay {
     display: flex;
   }
 }
