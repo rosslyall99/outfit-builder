@@ -350,45 +350,73 @@
 
         <button type="button" class="modal-close" @click="showEnquiryModal = false">✕</button>
 
-        <h3>Enquire About This Outfit</h3>
+        <!-- FORM VIEW (before sending) -->
+        <div v-if="!sendSuccess">
 
-        <table class="enquiry-table">
-          <tbody>
-            <tr>
-              <td class="label-cell">Function Date</td>
-              <td><input type="date" v-model="enquiryForm.date" /></td>
-            </tr>
-            <tr>
-              <td class="label-cell">Adult Hires</td>
-              <td><input type="number" v-model="enquiryForm.adults" /></td>
-            </tr>
-            <tr>
-              <td class="label-cell">Kids Hires</td>
-              <td><input type="number" v-model="enquiryForm.kids" /></td>
-            </tr>
-            <tr>
-              <td class="label-cell">Email Address</td>
-              <td><input type="email" v-model="enquiryForm.email" /></td>
-            </tr>
-          </tbody>
-        </table>
+          <h3>Enquire About This Outfit</h3>
 
-        <button 
-          type="button" 
-          class="section-button" 
-          @click="submitEnquiry"
-          :disabled="sending"
-        >
-          {{ sending ? 'Sending...' : 'Send Enquiry' }}
-        </button>
+          <table class="enquiry-table">
+            <tbody>
+              <tr>
+                <td class="label-cell">Function Date</td>
+                <td><input type="date" v-model="enquiryForm.date" /></td>
+              </tr>
+              <tr>
+                <td class="label-cell">Adult Hires</td>
+                <td><input type="number" v-model="enquiryForm.adults" placeholder="enter quantity..." /></td>
+              </tr>
+              <tr>
+                <td class="label-cell">Kids Hires</td>
+                <td><input type="number" v-model="enquiryForm.kids" placeholder="enter quantity..." /></td>
+              </tr>
+              <tr>
+                <td class="label-cell">Email Address</td>
+                <td><input type="email" v-model="enquiryForm.email" placeholder="you@example.com" /></td>
+              </tr>
+            </tbody>
+          </table>
 
-        <p v-if="sendSuccess" style="color: green; margin-top: 10px;">
-          Enquiry sent successfully!
-        </p>
+          <button 
+            type="button" 
+            class="section-button" 
+            @click="submitEnquiry"
+            :disabled="sending"
+          >
+            {{ sending ? 'Sending...' : 'Send Enquiry' }}
+          </button>
 
-        <p v-if="sendError" style="color: red; margin-top: 10px;">
-          Something went wrong — please try again.
-        </p>
+          <p v-if="sendError" style="color: red; margin-top: 10px;">
+            Something went wrong — please try again.
+          </p>
+
+        </div>
+
+        <!-- SUCCESS VIEW (after sending) -->
+        <div v-else class="enquiry-success">
+
+          <h3>Thank you!</h3>
+
+          <p>Your enquiry has been sent — we will be in touch very soon.</p>
+
+          <p>
+            If you need to contact us before then, you can reach us here:<br>
+            <a href="https://slanjkilts.com/contact" target="_blank">
+              slanjkilts.com/contact
+            </a>
+          </p>
+
+          <p>Please close this window when you're finished.</p>
+
+          <button 
+            type="button" 
+            class="section-button" 
+            @click="showEnquiryModal = false"
+            style="margin-top: 20px;"
+          >
+            Close
+          </button>
+
+        </div>
 
       </div>
     </div>
@@ -881,24 +909,24 @@ export default {
 
     async submitEnquiry() {
       this.sending = true
-      this.sendSuccess = false
       this.sendError = false
 
       try {
+
+        /* =========================================================
+          REAL EMAILJS SEND (LIVE MODE)
+          ---------------------------------------------------------
+          To ENABLE real sending:
+          1. UNCOMMENT this block
+          2. COMMENT OUT the FAKE TEST SEND block below
+        ========================================================= */
+
+        /*
         const payload = {
           date: this.enquiryForm.date,
           adults: this.enquiryForm.adults,
           kids: this.enquiryForm.kids,
-          email: this.enquiryForm.email,
-
-          jacket: this.selections.jacket?.name || '',
-          shirt: this.selections.shirt?.name || '',
-          tie: this.selections.tie?.name || '',
-          kilt: this.selections.kilt?.name || '',
-          sporran: this.selections.sporran?.name || '',
-          socks: this.selections.socks?.name || '',
-          shoes: this.selections.shoes?.name || '',
-          face: this.selections.face?.name || ''
+          email: this.enquiryForm.email
         }
 
         await emailjs.send(
@@ -907,16 +935,34 @@ export default {
           payload,
           "YoH7CX3KASZqKB6Hs"
         )
+        */
 
-        this.sendSuccess = true
-        this.showEnquiryModal = false
+        /* =========================================================
+          FAKE SEND (TEST MODE — SAFE, NO EMAILJS REQUESTS USED)
+          ---------------------------------------------------------
+          This simulates a successful send after 800ms.
+          Leave this ON while testing.
+        ========================================================= */
+
+        await new Promise(resolve => setTimeout(resolve, 800))
+
+
+        /* =========================================================
+          SUCCESS HANDLING (shared by both real + fake sends)
+        ========================================================= */
+
+        this.sending = false
+        this.sendSuccess = true   // triggers your success message modal
 
       } catch (err) {
-        console.error(err)
+
+        /* =========================================================
+          ERROR HANDLING
+        ========================================================= */
+
+        this.sending = false
         this.sendError = true
       }
-
-      this.sending = false
     }
   },
 
