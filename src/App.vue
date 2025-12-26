@@ -1361,6 +1361,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   filter: brightness(0) saturate(100%);
 }
 
+input[type="number"] {
+  background-color: white !important;
+  color-scheme: light !important;
+  color: #000 !important;
+}
+
 .enquiry-table input:focus {
   border-color: #0a1368;
   outline: none;
