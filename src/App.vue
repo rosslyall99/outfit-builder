@@ -232,9 +232,10 @@
         <button type="button" @click="adjustScale(-0.02)">－</button>
       </div>
 
+      <!-- Bottom Bar - Price and Enquiry Button-->
       <div class="bottom-bar desktop-bottom-bar">
         <div class="price-display">£{{ totalPrice }}</div>
-        <button type="button" class="section-button" id="enquire">Enquire</button>
+        <button type="button" class="section-button" @click="showEnquiryModal = true">Enquire</button>
       </div>
     </div>
 
@@ -261,10 +262,9 @@
 
         <div class="bottom-bar">
           <div class="price-display">£{{ totalPrice }}</div>
-          <button type="button" class="section-button" id="enquire">Enquire</button>
+          <button type="button" class="section-button" @click="showEnquiryModal = true">Enquire</button>
         </div>
     </div>
-
 
     <!-- Outfit preview -->
     <div class="preview">
@@ -343,8 +343,58 @@
         </div>
       </div>
     </div>
+
+    <!-- Enquiry modal -->
+    <div v-if="showEnquiryModal" class="modal">
+      <div class="modal-content">
+
+        <button type="button" class="modal-close" @click="showEnquiryModal = false">✕</button>
+
+        <h3>Enquire About This Outfit</h3>
+
+        <table class="enquiry-table">
+          <tbody>
+            <tr>
+              <td class="label-cell">Function Date</td>
+              <td><input type="date" v-model="enquiryForm.date" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell">Adult Hires</td>
+              <td><input type="number" v-model="enquiryForm.adults" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell">Kids Hires</td>
+              <td><input type="number" v-model="enquiryForm.kids" /></td>
+            </tr>
+            <tr>
+              <td class="label-cell">Email Address</td>
+              <td><input type="email" v-model="enquiryForm.email" /></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button 
+          type="button" 
+          class="section-button" 
+          @click="submitEnquiry"
+          :disabled="sending"
+        >
+          {{ sending ? 'Sending...' : 'Send Enquiry' }}
+        </button>
+
+        <p v-if="sendSuccess" style="color: green; margin-top: 10px;">
+          Enquiry sent successfully!
+        </p>
+
+        <p v-if="sendError" style="color: red; margin-top: 10px;">
+          Something went wrong — please try again.
+        </p>
+
+      </div>
+    </div>
   </div>
 
+  <!-- Debug log - currently not in use -->
   <pre id="debug-log"
       style="
         display:none;
@@ -369,6 +419,8 @@
   FilesetResolver,
   FaceDetector
 } from "@mediapipe/tasks-vision"
+
+  import emailjs from 'emailjs-com'
 
 export default {
   data() {
@@ -442,8 +494,19 @@ export default {
         tartanPremiums: {'Beatson': 20},
         shoes: {'Brown': 10},
         sporran: {'Copper': 30},
-        shirt: 20},
-    }
+        shirt: 20,
+      },
+      showEnquiryModal: false,
+      enquiryForm: {
+        date: '',
+        adults: '',
+        kids: '',
+        email: ''
+      },
+      sending: false,
+      sendSuccess: false,
+      sendError: false,
+    } 
   },
 
   computed: {
@@ -814,6 +877,46 @@ export default {
       canvases.forEach(c => {
         try { c.width = 0; c.height = 0 } catch(e) {}
       })
+    },
+
+    async submitEnquiry() {
+      this.sending = true
+      this.sendSuccess = false
+      this.sendError = false
+
+      try {
+        const payload = {
+          date: this.enquiryForm.date,
+          adults: this.enquiryForm.adults,
+          kids: this.enquiryForm.kids,
+          email: this.enquiryForm.email,
+
+          jacket: this.selections.jacket?.name || '',
+          shirt: this.selections.shirt?.name || '',
+          tie: this.selections.tie?.name || '',
+          kilt: this.selections.kilt?.name || '',
+          sporran: this.selections.sporran?.name || '',
+          socks: this.selections.socks?.name || '',
+          shoes: this.selections.shoes?.name || '',
+          face: this.selections.face?.name || ''
+        }
+
+        await emailjs.send(
+          "service_tk8jn8g",
+          "template_75o2wq8",
+          payload,
+          "YoH7CX3KASZqKB6Hs"
+        )
+
+        this.sendSuccess = true
+        this.showEnquiryModal = false
+
+      } catch (err) {
+        console.error(err)
+        this.sendError = true
+      }
+
+      this.sending = false
     }
   },
 
@@ -821,7 +924,7 @@ export default {
     this.initFaceDetector()
     this.cleanupBeforeReload()
     this.initFaceDetector()
-    this.debugDevice = this.isMobile ? 'MOBILE DETECTED' : 'DESKTOP DETECTED'
+    emailjs.init("YoH7CX3KASZqKB6Hs")
   },
 
   beforeUnmount() {
@@ -1154,21 +1257,23 @@ h3 {
 .modal-content {
   position: relative;
   background: #fff;
-  padding: 20px;
+  padding: 0px 0px 16px 0px;
   border-radius: 8px;
   width: 90%;
   max-height: 80%;
-  overflow-y: auto;
+  transform: none !important;
+  overflow: visible !important;
 }
 
 .modal-close {
   position: absolute;
-  top: 0;
-  right: 0;
+  padding: 0px;
+  top: 8px;
+  right: 16px;
   background: transparent;
   border: none;
   font-size: 1.5rem;
-  color: #333;
+  color: #ffffff;
   cursor: pointer;
 }
 
@@ -1179,8 +1284,25 @@ h3 {
 .modal .thumbs {
   display: grid !important;
   grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  gap: 4px;
+  gap: 8px;
   width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+  justify-items: center;
+}
+
+.modal-content h3 {
+  background: rgba(10, 19, 104, 0.6);
+  color: white;
+  margin: 0;
+  padding: 12px 16px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  width: 100%;
+  box-sizing: border-box;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
 }
 
 li {
@@ -1202,6 +1324,47 @@ li {
   color: #fff;
   border-radius: 4px;
   background: rgba(78, 85, 153, 1);
+}
+
+.enquiry-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+}
+
+.enquiry-table td {
+  padding: 8px 12px;
+  vertical-align: middle;
+}
+
+.label-cell {
+  text-align: right;
+  font-weight: 600;
+  color: #333;
+  width: 40%;
+  white-space: nowrap;
+}
+
+.enquiry-table input {
+  width: 100%;
+  padding: 8px 12px;
+  color: #000;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  box-sizing: border-box;
+  appearance: auto;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: brightness(0) saturate(100%);
+}
+
+.enquiry-table input:focus {
+  border-color: #0a1368;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(10, 19, 104, 0.2);
 }
 
 @media (max-width: 768px) {
