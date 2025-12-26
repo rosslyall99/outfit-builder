@@ -221,6 +221,21 @@
           style="display: none;"
         >
       </div>
+
+      <!-- Face Adjust Overlay -->
+      <div v-if="selections.face && selections.face.folder === null" class="face-adjust-overlay">
+        <button type="button" @click="nudgeY(-4)">▲</button>
+        <button type="button" @click="nudgeX(-4)">◀</button>
+        <button type="button" @click="nudgeX(4)">▶</button>
+        <button type="button" @click="nudgeY(4)">▼</button>
+        <button type="button" @click="adjustScale(0.02)">＋</button>
+        <button type="button" @click="adjustScale(-0.02)">－</button>
+      </div>
+
+      <div class="bottom-bar desktop-bottom-bar">
+        <div class="price-display">£{{ totalPrice }}</div>
+        <button type="button" class="section-button" id="enquire">Enquire</button>
+      </div>
     </div>
 
     <!-- Mobile view section buttons -->
@@ -421,6 +436,7 @@ export default {
       uploadInProgress: false,
       showFaceSourceChoice: false,
       showFaceInstructions: false,
+      debugDevice: '',
       PRICE_MAP: {
         base: 125,
         tartanPremiums: {'Beatson': 20},
@@ -453,7 +469,16 @@ export default {
     },
 
     isMobile() {
-      return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+      const ua = navigator.userAgent || navigator.vendor || window.opera
+
+      // True mobile devices
+      if (/Android|iPhone|iPad|iPod/i.test(ua)) return true
+
+      // Touchscreen laptops often report as mobile — filter them out
+      if (navigator.maxTouchPoints && navigator.maxTouchPoints > 1) return false
+
+      // Screen width fallback
+      return window.innerWidth < 768
     },
 
     totalPrice() {
@@ -796,12 +821,12 @@ export default {
     this.initFaceDetector()
     this.cleanupBeforeReload()
     this.initFaceDetector()
+    this.debugDevice = this.isMobile ? 'MOBILE DETECTED' : 'DESKTOP DETECTED'
   },
 
   beforeUnmount() {
     this.cleanupBeforeReload()
-  }
-
+  },
 }
 </script>
 
@@ -824,28 +849,24 @@ h3 {
 
 .outfit-builder {
   display: flex;
-  /* grid-template-columns: 1fr auto; */
   width: 100%;
   height: 100vh;
   padding: 0px;
 }
 
 .collapsible {
-  border: 1px solid transparent;
   border-radius: 6px;
   overflow: hidden;
 }
 
 .section-heading {
-  padding: 0.5%;
-  background-color: #f5f5f5;
-  color: #a5a5a5;
-  border: 1px solid #ccc;
+  padding: 8px;
+  background: rgba(10, 19, 104, 0.4);
+  color: #ffffff;
   border-radius: 6px;
   display: flex;
   align-items: center;
   cursor: pointer;
-
   position: relative;   /* allow absolute positioning inside */
   justify-content: center; /* center the text */
   text-align: center;
@@ -856,20 +877,16 @@ h3 {
   right: 10px;   /* keep arrow on the right edge */
 }
 
-
 .section {
-  background: #e4d8d8;
+  background: rgb(255, 255, 255);
 }
 
 .collapsible.active {
-  border: 1px solid #000;
-  margin: 0;
 }
 
 .collapsible.active .section-heading {
   border: none;
   border-radius: 0;
-  color: #000;
 }
 
 .collapsible-toggle {
@@ -924,11 +941,13 @@ h3 {
 
 /* Thumbnail sections */
 .thumbnails {
+  padding: 1%;
+  gap:1%;
+  width: 40%;
   display: flex;
   position: relative;
   flex-direction: column;
-  gap: 1%;
-  margin-right: 1.5%;
+  background: rgba(10, 19, 104, 0.2);
 }
 
 .thumbs {
@@ -980,6 +999,13 @@ h3 {
   position: relative;
   overflow-y: auto;
   box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .preview {
+    width: 60%;
+    margin-left: auto;
+  }
 }
 
 .preview-stack {
@@ -1035,10 +1061,13 @@ h3 {
 
 .face-adjust-overlay {
   display: flex;
-  gap: 8px;
   border-radius: 4px;
   z-index: 999;
-  background: rgba(10,10,104, 0.2)  
+  background: rgba(10,10,104, 0.4);
+  padding: 8px;
+  justify-content: space-between;
+  box-sizing: border-box;  
+  gap: 8px;
 }
 
 @media (max-width: 768px) {
@@ -1046,21 +1075,21 @@ h3 {
     flex-direction: column;
     top: 0px;
     right: 0px;
-    padding: 8px;
   }
 }
 
 .face-adjust-overlay button {
+  width: 100%;
   height: 2.5rem;
   font-size: 1rem;
-  border: none;
-  background: rgba(10, 19, 104, 0.4);
+  border: 1px solid #fff;
+  background: rgba(10, 19, 104, 0);
   border-radius: 4px;
   cursor: pointer;
 }
 
 .face-adjust-overlay button:hover {
-  background: rgba(10, 19, 104, 0.8);
+  background: rgba(10, 19, 104, 0.6);
 }
 
 /* Layer order */
@@ -1163,7 +1192,6 @@ li {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background: rgba(10, 19, 104, 0.2);
   z-index: 999;
   border-radius: 4px;
 }
@@ -1173,6 +1201,7 @@ li {
   font-weight: bold;
   color: #fff;
   border-radius: 4px;
+  background: rgba(78, 85, 153, 1);
 }
 
 @media (max-width: 768px) {
