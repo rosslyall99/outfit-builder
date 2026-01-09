@@ -476,6 +476,7 @@ export default {
         { name: 'Manx Hunting', swatch: 'swatch-manx.png', preview: 'kilt-manx.png', folder: 'kiltSwatches' },
         { name: 'Maple Leaf', swatch: 'swatch-mapleLeaf.png', preview: 'kilt-mapleLeaf.png', folder: 'kiltSwatches' },
         { name: 'Spirit of Glasgow', swatch: 'swatch-spiritOfGlasgow.png', preview: 'kilt-spiritOfGlasgow.png', folder: 'kiltSwatches' },
+        { name: 'Spirit of Slanj', swatch: 'swatch-spiritOfSlanj.png', preview: 'kilt-spiritOfSlanj.png', folder: 'kiltSwatches' },
         { name: 'St Mirren FC', swatch: 'swatch-stMirren.png', preview: 'kilt-stMirren.png', folder: 'kiltSwatches' },
         { name: 'Weathered Patriot', swatch: 'swatch-weatheredPatriot.png', preview: 'kilt-weatheredPatriot.png', folder: 'kiltSwatches' }
       ],
