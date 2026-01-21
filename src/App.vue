@@ -1031,9 +1031,6 @@ h3 {
   background: rgb(255, 255, 255);
 }
 
-.collapsible.active {
-}
-
 .collapsible.active .section-heading {
   border: none;
   border-radius: 0;
