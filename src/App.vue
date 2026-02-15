@@ -472,11 +472,13 @@ export default {
         { name: 'Beatson', swatch: 'swatch-beatson.png', preview: 'kilt-beatson.png', folder: 'kiltSwatches' },
         { name: 'Buchanan Hunting', swatch: 'swatch-buchanan.png', preview: 'kilt-buchanan.png', folder: 'kiltSwatches' },
         { name: 'Grey Slanj', swatch: 'swatch-greySlanj.png', preview: 'kilt-greySlanj.png', folder: 'kiltSwatches' },
+        { name: 'Holyrood', swatch: 'swatch-holyrood.png', preview: 'kilt-holyrood.png', folder: 'kiltSwatches' },
         { name: 'Isle of Skye', swatch: 'swatch-isleOfSkye.png', preview: 'kilt-isleOfSkye.png', folder: 'kiltSwatches' },
         { name: 'Manx Hunting', swatch: 'swatch-manx.png', preview: 'kilt-manx.png', folder: 'kiltSwatches' },
         { name: 'Maple Leaf', swatch: 'swatch-mapleLeaf.png', preview: 'kilt-mapleLeaf.png', folder: 'kiltSwatches' },
         { name: 'Spirit of Glasgow', swatch: 'swatch-spiritOfGlasgow.png', preview: 'kilt-spiritOfGlasgow.png', folder: 'kiltSwatches' },
         { name: 'Spirit of Slanj', swatch: 'swatch-spiritOfSlanj.png', preview: 'kilt-spiritOfSlanj.png', folder: 'kiltSwatches' },
+        { name: 'Spirit of The Clyde', swatch: 'swatch-spiritOfTheClyde.png', preview: 'kilt-spiritOfTheClyde.png', folder: 'kiltSwatches' },
         { name: 'St Mirren FC', swatch: 'swatch-stMirren.png', preview: 'kilt-stMirren.png', folder: 'kiltSwatches' },
         { name: 'Weathered Patriot', swatch: 'swatch-weatheredPatriot.png', preview: 'kilt-weatheredPatriot.png', folder: 'kiltSwatches' }
       ],
