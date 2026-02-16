@@ -1248,10 +1248,10 @@ h3 {
 .face           { z-index: 0; }
 .uploaded-face  { z-index: 0; }
 .shirt          { z-index: 2; }
-.jacket         { z-index: 3; }
-.tie            { z-index: 4; }
+.jacket         { z-index: 4; }
+.tie            { z-index: 5; }
 .kilt           { z-index: 2; }
-.sporran        { z-index: 6; }
+.sporran        { z-index: 3; }
 .socks          { z-index: 7; }
 .shoes          { z-index: 8; }
 
