@@ -495,7 +495,9 @@ export default {
         { name: 'Silver', swatch: 'swatch-silver.png', preview: 'tie-silver.png', folder: 'tieSwatches' }
       ],
       shirts: [],
-      sporrans: [],
+      sporrans: [
+        { name: 'Silver', swatch: 'swatch-sporran-silver.png', preview: 'sporran-silver.png', folder: 'sporranSwatches' },
+      ],
       sockss: [],
       shoess: [],
       selections: {
