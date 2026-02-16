@@ -497,6 +497,9 @@ export default {
       shirts: [],
       sporrans: [
         { name: 'Silver', swatch: 'swatch-sporran-silver.png', preview: 'sporran-silver.png', folder: 'sporranSwatches' },
+        { name: 'Copper', swatch: 'swatch-sporran-copper.png', preview: 'sporran-copper.png', folder: 'sporranSwatches' },
+        { name: 'Black', swatch: 'swatch-sporran-black.png', preview: 'sporran-black.png', folder: 'sporranSwatches' },
+        { name: 'Brown', swatch: 'swatch-sporran-brown.png', preview: 'sporran-brown.png', folder: 'sporranSwatches' },
       ],
       sockss: [],
       shoess: [],
