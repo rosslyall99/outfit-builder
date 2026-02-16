@@ -275,7 +275,7 @@
         <img v-if="selections.jacket" :src="`${basePath}images/jacketColors/${selections.jacket.preview}`" class="jacket" />
         <img v-if="selections.tie" :src="`${basePath}images/tieColors/${selections.tie.preview}`" class="tie" />
         <img v-if="selections.kilt" :src="`${basePath}images/kiltColors/${selections.kilt.preview}`" class="kilt" />
-        <img v-if="selections.sporran" :src="`${basePath}images/${selections.sporran.preview}`" class="sporran" />
+        <img v-if="selections.sporran" :src="`${basePath}images/sporranColors/${selections.sporran.preview}`" class="sporran" />
         <img v-if="selections.socks" :src="`${basePath}images/${selections.socks.preview}`" class="socks" />
         <img v-if="selections.shoes" :src="`${basePath}images/${selections.shoes.preview}`" class="shoes" />
       </div>
