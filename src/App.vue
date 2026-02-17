@@ -274,8 +274,22 @@
         <img v-if="selections.shirt" :src="`${basePath}images/shirtColors/${selections.shirt.preview}`" class="shirt" />
         <img v-if="selections.jacket" :src="`${basePath}images/jacketColors/${selections.jacket.preview}`" class="jacket" />
         <img v-if="selections.tie" :src="`${basePath}images/tieColors/${selections.tie.preview}`" class="tie" />
-        <img v-if="selections.kilt" :src="`${basePath}images/kiltColors/${selections.kilt.preview}`" class="kilt" />
-        <img v-if="selections.sporran" :src="`${basePath}images/sporranColors/${selections.sporran.preview}`" class="sporran" />
+        <Transition name="fade">
+          <img
+            v-if="selections.kilt"
+            :key="selections.kilt.preview"
+            :src="`${basePath}images/kiltColors/${selections.kilt.preview}`"
+            class="kilt"
+          />
+        </Transition>
+        <Transition name="fade">
+          <img
+            v-if="selections.sporran"
+            :key="selections.sporran.preview"
+            :src="`${basePath}images/sporranColors/${selections.sporran.preview}`"
+            class="sporran"
+          />
+        </Transition>
         <img v-if="selections.socks" :src="`${basePath}images/${selections.socks.preview}`" class="socks" />
         <img v-if="selections.shoes" :src="`${basePath}images/${selections.shoes.preview}`" class="shoes" />
       </div>
@@ -526,7 +540,7 @@ export default {
       showFaceInstructions: false,
       debugDevice: '',
       PRICE_MAP: {
-        base: 125,
+        base: 140,
         tartanPremiums: {'Beatson': 20},
         shoes: {'Brown': 10},
         sporran: {'Copper': 30},
