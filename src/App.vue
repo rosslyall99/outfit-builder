@@ -271,8 +271,15 @@
       <div class="preview-stack">
         <img src="/images/baseBodynoHead.png" class="base-body" />
         <img v-if="selections.face" :src="faceSrc" :class="['face', selections.face.folder === null ? 'uploaded-face' : '']"   :style="uploadedFaceStyle"/>
+        <Transition name="fade">
+          <img
+            v-if="selections.jacket"
+            :key="selections.jacket.preview"
+            :src="`${basePath}images/jacketColors/${selections.jacket.preview}`"
+            class="jacket"
+          />
+        </Transition>
         <img v-if="selections.shirt" :src="`${basePath}images/shirtColors/${selections.shirt.preview}`" class="shirt" />
-        <img v-if="selections.jacket" :src="`${basePath}images/jacketColors/${selections.jacket.preview}`" class="jacket" />
         <img v-if="selections.tie" :src="`${basePath}images/tieColors/${selections.tie.preview}`" class="tie" />
         <Transition name="fade">
           <img
