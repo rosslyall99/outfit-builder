@@ -536,7 +536,12 @@ export default {
         face: { name: 'Blonde', swatch: 'swatch-blonde.png', preview: 'face-blonde.png', folder: 'faceSwatches' },
         jacket: { name: 'Midnight Blue', swatch: 'swatch-midnightBlue.png', preview: 'jacket-midnightBlue.png', folder: 'jacketSwatches' },
         kilt: { name: 'Ancient Patriot', swatch: 'swatch-ancientPatriot.png', preview: 'kilt-ancientPatriot.png', folder: 'kiltSwatches' },
-        tie: { name: 'Navy', swatch: 'swatch-navy.png', preview: 'tie-navy.png', folder: 'tieSwatches' }},
+        tie: {},
+        // shirt: {},
+        sporran: { name: 'Silver', swatch: 'swatch-sporran-silver.png', preview: 'sporran-silver.png', folder: 'sporranSwatches' }
+        // socks: {},
+        // shoes: {}
+      },
       uploadedFaceTransform: {
         scale: 0.19,
         x: -5,
