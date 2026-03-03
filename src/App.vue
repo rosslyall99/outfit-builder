@@ -269,8 +269,10 @@
     <!-- Outfit preview -->
     <div class="preview">
       <div class="preview-stack">
+        <!-- Face -->
         <img src="/images/baseBodynoHead.png" class="base-body" />
         <img v-if="selections.face" :src="faceSrc" :class="['face', selections.face.folder === null ? 'uploaded-face' : '']"   :style="uploadedFaceStyle"/>
+        <!-- Jacket -->
         <Transition name="fade">
           <img
             v-if="selections.jacket"
@@ -279,8 +281,11 @@
             class="jacket"
           />
         </Transition>
+        <!-- Shirt -->
         <img v-if="selections.shirt" :src="`${basePath}images/shirtColors/${selections.shirt.preview}`" class="shirt" />
+        <!-- Tie -->
         <img v-if="selections.tie" :src="`${basePath}images/tieColors/${selections.tie.preview}`" class="tie" />
+        <!-- Kilt -->
         <Transition name="fade">
           <img
             v-if="selections.kilt"
@@ -289,6 +294,7 @@
             class="kilt"
           />
         </Transition>
+        <!-- Sporran -->
         <Transition name="fade">
           <img
             v-if="selections.sporran"
@@ -297,7 +303,9 @@
             class="sporran"
           />
         </Transition>
+        <!-- Socks -->
         <img v-if="selections.socks" :src="`${basePath}images/${selections.socks.preview}`" class="socks" />
+        <!-- Shoes -->
         <img v-if="selections.shoes" :src="`${basePath}images/${selections.shoes.preview}`" class="shoes" />
       </div>
     </div>
@@ -525,11 +533,10 @@ export default {
       sockss: [],
       shoess: [],
       selections: {
-        face: null,
-        jacket: { name: 'Charcoal', swatch: 'swatch-charcoal.png', preview: 'jacket-charcoal.png' },
-        kilt: { name: 'Isle of Skye', swatch: 'swatch-isleOfSkye.png', preview: 'kilt-spiritOfGlasgow.png' },
-        tie: { name: 'Silver', swatch: 'swatch-silver.png', preview: 'tie-silver.png' }
-      },
+        face: { name: 'Blonde', swatch: 'swatch-blonde.png', preview: 'face-blonde.png', folder: 'faceSwatches' },
+        jacket: { name: 'Midnight Blue', swatch: 'swatch-midnightBlue.png', preview: 'jacket-midnightBlue.png', folder: 'jacketSwatches' },
+        kilt: { name: 'Ancient Patriot', swatch: 'swatch-ancientPatriot.png', preview: 'kilt-ancientPatriot.png', folder: 'kiltSwatches' },
+        tie: { name: 'Navy', swatch: 'swatch-navy.png', preview: 'tie-navy.png', folder: 'tieSwatches' }},
       uploadedFaceTransform: {
         scale: 0.19,
         x: -5,
